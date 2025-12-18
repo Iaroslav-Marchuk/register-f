@@ -1,0 +1,12 @@
+:root {
+  --bg-page: #f8fafc;
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --error: #dc2626;
+  --info: #2563eb;
+}
+
+[data-theme='dark'] {
+  --bg-page: #020617;
+}

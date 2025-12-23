@@ -12,7 +12,7 @@ function Header() {
       <NavLink to="main">
         <img src={logo} alt="logo" className={css.logo} />
       </NavLink>
-      <span className={css.span}>Registo da produção</span>
+      <span className={css.span}>Controlo de produção</span>
       <Navigation />
     </header>
   );

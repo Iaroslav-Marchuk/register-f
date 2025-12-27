@@ -1,12 +1,28 @@
 :root {
-  --bg-page: #f8fafc;
+  --primary: #d9e6f2;
+  --primary-foreground: #163259;
+  --primary-hover: #26acf4;
 
-  --success: #16a34a;
-  --warning: #f59e0b;
-  --error: #dc2626;
-  --info: #2563eb;
+  --secondary: #cee6f2;
+  --secondary-foreground: #0d7fc4;
+  --secondary-hover: #99c4f5;
+
+  --background: #e8f8ff;
+  --foreground: #163259;
+  --table: #f2fafe;
+  --table-foreground: #080b14;
+
+  --test: red;
 }
 
 [data-theme='dark'] {
-  --bg-page: #020617;
+  --primary: #26acf4;
+  --primary-foreground: #d8effc;
+  --secondary: #232838;
+  --secondary-foreground: #d8dfe4;
+
+  --background: #0e111b;
+  --foreground: #d8dfe4;
+  --table: #171a24;
+  --table-foreground: #d8dfe4;
 }

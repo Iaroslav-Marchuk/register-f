@@ -1,9 +1,13 @@
+import Container from '../Container/Container.jsx';
+
 import css from './Footer.module.css';
 
 function Footer() {
   return (
-    <footer>
-      <p className={css.footer}>© Copyright 2025 Vidreira Algarvia</p>
+    <footer className={css.footer}>
+      <Container className={css.container}>
+        <p className={css.text}>© Copyright 2025 Vidreira Algarvia</p>
+      </Container>
     </footer>
   );
 }

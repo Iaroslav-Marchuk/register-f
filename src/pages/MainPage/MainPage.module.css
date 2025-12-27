@@ -1,0 +1,53 @@
+.section {
+  margin: 40px 0;
+}
+
+.title {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 8px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #26a69a;
+  border: solid 2px #004d40;
+  color: var(--primary);
+  border-radius: 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  background: #00897b;
+}
+
+.btn:active {
+  transform: scale(0.98);
+  background: #00897b;
+}
+
+.icon {
+  stroke: var(--primary);
+}
+
+.info {
+  display: flex;
+  gap: 20px;
+}
+
+.span {
+  padding: 8px 24px;
+  background-color: var(--secondary);
+  border: solid 2px var(--secondary-foreground);
+  border-radius: 20px;
+}

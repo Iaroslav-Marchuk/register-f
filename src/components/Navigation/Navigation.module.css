@@ -11,11 +11,43 @@
   align-items: center;
   justify-content: center;
   padding: 16px 0;
-  border: solid 1px blue;
+  border: solid 2px var(--secondary-foreground);
+  background-color: var(--secondary);
   border-radius: 100%;
   transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.link::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  opacity: 1;
+}
+
+.icon {
+  stroke: var(--secondary-foreground);
 }
 
 .link:hover {
   transform: scale(1.05);
+  background: var(--secondary-hover);
 }

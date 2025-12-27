@@ -10,6 +10,7 @@ import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.jsx';
 
 import RestrictedRoute from '../RestrictedRoute.jsx';
 import PrivateRoute from '../PrivateRoute.jsx';
+import ReportPage from '../../pages/ReportPage/ReportPage.jsx';
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
           <Route
             path="/main"
             element={<PrivateRoute element={<MainPage />} />}
+          />
+          <Route
+            path="/report"
+            element={<PrivateRoute element={<ReportPage />} />}
           />
           <Route
             path="/profile"

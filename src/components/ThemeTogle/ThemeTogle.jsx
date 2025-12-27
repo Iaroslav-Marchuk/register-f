@@ -1,8 +1,4 @@
 function ThemeTogle() {
-  return (
-    <div>
-      <h1>Theme Togle</h1>
-    </div>
-  );
+  return <div></div>;
 }
 export default ThemeTogle;

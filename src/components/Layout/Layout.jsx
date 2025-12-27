@@ -7,7 +7,7 @@ import css from './Layout.module.css';
 
 function Layout() {
   return (
-    <div className={css.container}>
+    <div className={css.layout}>
       <Header />
       <main className={css.main}>
         <Outlet />

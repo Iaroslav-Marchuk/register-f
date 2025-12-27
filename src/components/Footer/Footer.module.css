@@ -1,7 +1,11 @@
 .footer {
+  padding: 34px 0;
+  /* height: 80px; */
+  background: var(--primary);
+}
+
+.container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 24px 0;
-  height: 80px;
+  align-items: center;
 }

@@ -1,0 +1,19 @@
+.resume {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+  justify-content: end;
+  padding: 8px 24px;
+  background-color: var(--secondary);
+  border: solid 2px var(--secondary-foreground);
+}
+
+.span {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.list {
+  display: flex;
+  gap: 10px;
+}

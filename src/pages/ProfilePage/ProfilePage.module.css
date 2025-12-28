@@ -1,0 +1,21 @@
+.section {
+  margin: 40px 0;
+}
+
+.title {
+  font-size: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  gap: 40px;
+}
+
+.sideBar {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

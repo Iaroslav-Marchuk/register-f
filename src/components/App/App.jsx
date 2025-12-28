@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 import Layout from '../Layout/Layout.jsx';
 
@@ -11,10 +12,14 @@ import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.jsx';
 import RestrictedRoute from '../RestrictedRoute.jsx';
 import PrivateRoute from '../PrivateRoute.jsx';
 import ReportPage from '../../pages/ReportPage/ReportPage.jsx';
+import ProfileDetails from '../ProfileDetails/ProfileDetails.jsx';
+import ProfileSettings from '../ProfileSettings/ProfileSettings.jsx';
+import ProfileActivity from '../ProfileActivity/ProfileActivity.jsx';
 
 function App() {
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Navigate to="/auth" />} />
 
@@ -37,7 +42,13 @@ function App() {
           <Route
             path="/profile"
             element={<PrivateRoute element={<ProfilePage />} />}
-          />
+          >
+            <Route index element={<ProfileDetails />} />
+            <Route path="details" element={<ProfileDetails />} />
+            <Route path="activity" element={<ProfileActivity />} />
+            <Route path="settings" element={<ProfileSettings />} />
+          </Route>
+
           <Route
             path="/stats"
             element={<PrivateRoute element={<StatisticPage />} />}

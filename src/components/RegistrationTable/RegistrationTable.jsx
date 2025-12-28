@@ -1,6 +1,6 @@
-import css from './Table.module.css';
+import css from './RegistrationTable.module.css';
 
-function Table() {
+function RegistrationTable() {
   return (
     <table className={css.table}>
       <thead className={css.header}>
@@ -55,4 +55,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default RegistrationTable;

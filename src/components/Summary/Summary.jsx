@@ -2,10 +2,15 @@ import css from './Summary.module.css';
 
 function Summary() {
   return (
-    <div>
-      <p className={css.resume}>
-        Resumo do dia: Feito 100 vidros, 300m<sup>2</sup>. Ratio - 1.05
-      </p>
+    <div className={css.resume}>
+      <span className={css.span}>Total</span>
+      <ul className={css.list}>
+        <li className={css.item}>100 vidros</li>
+        <li className={css.item}>
+          300m<sup>2</sup>.
+        </li>
+        <li className={css.item}>Ratio - 1.05,</li>
+      </ul>
     </div>
   );
 }

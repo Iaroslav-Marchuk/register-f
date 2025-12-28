@@ -51,8 +51,8 @@ function Navigation() {
       <button
         type="button"
         className={css.link}
-        data-tooltip="Sair"
-        aria-label="Sair"
+        data-tooltip="Saír"
+        aria-label="Saír"
       >
         <LogOut className={css.icon} size={32} strokeWidth={1.5} />
       </button>

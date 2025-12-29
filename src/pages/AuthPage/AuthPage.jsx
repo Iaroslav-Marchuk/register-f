@@ -1,3 +1,4 @@
+import { NavLink, Outlet } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 
 import css from './AuthPage.module.css';
@@ -7,13 +8,14 @@ function AuthPage() {
     <div className={css.wrapper}>
       <img src={logo} alt="logo" className={css.logo} />
       <div className={css.btns}>
-        <button type="submit" className={css.btn}>
+        <NavLink to="login" className={css.btn}>
           Login
-        </button>
-        <button type="submit" className={css.btn}>
+        </NavLink>
+        <NavLink to="register" className={css.btn}>
           Registar-se
-        </button>
+        </NavLink>
       </div>
+      {<Outlet />}
     </div>
   );
 }

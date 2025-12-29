@@ -3,18 +3,21 @@ import { Toaster } from 'react-hot-toast';
 
 import Layout from '../Layout/Layout.jsx';
 
+import AuthPage from '../../pages/AuthPage/AuthPage.jsx';
 import MainPage from '../../pages/MainPage/MainPage.jsx';
 import StatisticPage from '../../pages/StatisticPage/StatisticPage.jsx';
+import ReportPage from '../../pages/ReportPage/ReportPage.jsx';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage.jsx';
-import AuthPage from '../../pages/AuthPage/AuthPage.jsx';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.jsx';
 
 import RestrictedRoute from '../RestrictedRoute.jsx';
 import PrivateRoute from '../PrivateRoute.jsx';
-import ReportPage from '../../pages/ReportPage/ReportPage.jsx';
+
 import ProfileDetails from '../ProfileDetails/ProfileDetails.jsx';
 import ProfileSettings from '../ProfileSettings/ProfileSettings.jsx';
 import ProfileActivity from '../ProfileActivity/ProfileActivity.jsx';
+import RegistrationForm from '../RegistrationForm/RegistrationForm.jsx';
+import LoginForm from '../LoginForm/LoginForm.jsx';
 
 function App() {
   return (
@@ -25,10 +28,14 @@ function App() {
 
         <Route
           path="/auth"
-          element={
-            <RestrictedRoute redirectTo="/main" element={<AuthPage />} />
-          }
-        />
+          // element={
+          //   <RestrictedRoute redirectTo="/main" element={<AuthPage />} />
+          // }
+        >
+          <Route index element={<AuthPage />} />
+          <Route path="login" element={<LoginForm />} />
+          <Route path="register" element={<RegistrationForm />} />
+        </Route>
 
         <Route element={<Layout />}>
           <Route
@@ -43,7 +50,6 @@ function App() {
             path="/profile"
             element={<PrivateRoute element={<ProfilePage />} />}
           >
-            {/* <Route index element={<ProfileDetails />} /> */}
             <Route path="details" element={<ProfileDetails />} />
             <Route path="activity" element={<ProfileActivity />} />
             <Route path="settings" element={<ProfileSettings />} />

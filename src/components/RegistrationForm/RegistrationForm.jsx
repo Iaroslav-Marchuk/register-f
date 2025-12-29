@@ -4,6 +4,7 @@ import { UserRound, KeyRound } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import css from './RegistrationForm.module.css';
+import { NavLink } from 'react-router-dom';
 
 function RegistrationForm() {
   const initialValues = {
@@ -86,7 +87,10 @@ function RegistrationForm() {
         </Form>
       </Formik>
       <p className={css.text}>
-        Já tem uma conta? Faça <button className={css.span}>login</button>{' '}
+        Já tem uma conta? Faça{' '}
+        <NavLink to="/auth/login" className={css.link}>
+          Login
+        </NavLink>{' '}
         agora!
       </p>
     </div>

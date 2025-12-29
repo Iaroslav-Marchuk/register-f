@@ -3,12 +3,13 @@ import * as Yup from 'yup';
 import { UserRound, KeyRound } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import css from './RegistrationForm.module.css';
+import css from './LoginForm.module.css';
 
-function RegistrationForm() {
+function LoginForm() {
   const initialValues = {
     name: '',
     password: '',
+    local: '',
   };
 
   const validationSchema = Yup.object().shape({
@@ -28,8 +29,8 @@ function RegistrationForm() {
 
   return (
     <div className={css.wrapper}>
-      <h2 className={css.title}>Criar conta</h2>
-      <h3 className={css.subtitle}>para começar agora!</h3>
+      <h2 className={css.title}>Seja bem-vindo!</h2>
+      <h3 className={css.subtitle}>Inicie sessão para começar</h3>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -68,7 +69,7 @@ function RegistrationForm() {
                 name="password"
                 id="password"
                 placeholder=" "
-                autoComplete="new-password"
+                autoComplete="current-password"
                 className={css.input}
               />
               <KeyRound className={css.inputIcon} size={24} strokeWidth={1.5} />
@@ -80,17 +81,32 @@ function RegistrationForm() {
             />
           </div>
 
+          <div className={css.formGroup}>
+            <label htmlFor="local" className={css.label}>
+              Local do trabalho
+            </label>
+            <div className={css.inputContainer}>
+              <Field as="select" name="local" id="local" className={css.input}>
+                <option value="">--</option>
+                <option value="LINE_1">Linha 1</option>
+                <option value="LINE_2">Linha 2</option>
+                <option value="LINE_3">Linha 3</option>
+              </Field>
+            </div>
+            <ErrorMessage name="local" component="span" className={css.error} />
+          </div>
+
           <button type="submit" className={css.btn}>
-            Registar-se
+            Login
           </button>
         </Form>
       </Formik>
       <p className={css.text}>
-        Já tem uma conta? Faça <button className={css.span}>login</button>{' '}
+        Ainda não tem conta? <button className={css.span}>Registe-se</button>{' '}
         agora!
       </p>
     </div>
   );
 }
 
-export default RegistrationForm;
+export default LoginForm;

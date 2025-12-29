@@ -1,8 +1,6 @@
+import AuthPage from '../AuthPage/AuthPage.jsx';
+
 function StatisticPage() {
-  return (
-    <div>
-      <h1>Statistic Page</h1>
-    </div>
-  );
+  return <AuthPage />;
 }
 export default StatisticPage;

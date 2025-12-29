@@ -60,12 +60,13 @@
   background-color: #26a69a;
   border: solid 2px #004d40;
   color: var(--primary);
+  font-weight: 600;
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
 }
 
 .btn:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
   background: #00897b;
 }
 

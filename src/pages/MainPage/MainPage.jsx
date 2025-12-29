@@ -1,14 +1,14 @@
 import { CirclePlus } from 'lucide-react';
 
 import Container from '../../components/Container/Container.jsx';
-import RegistrationTable from '../../components/RegistrationTable/RegistrationTable.jsx';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
-import RegistrationForm from '../../components/RegistrationForm/RegistrationForm.jsx';
+import Summary from '../../components/Summary/Summary.jsx';
+import ProductionLogForm from '../../components/ProductionLogForm/ProductionLogForm.jsx';
+import ProductionLogTable from '../../components/ProductionLogTable/ProductionLogTable.jsx';
 
 import { useState } from 'react';
 
 import css from './MainPage.module.css';
-import Summary from '../../components/Summary/Summary.jsx';
 
 function MainPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,12 +38,12 @@ function MainPage() {
           </div>
         </div>
 
-        <RegistrationTable />
+        <ProductionLogTable />
         <Summary />
       </Container>
 
       <ModalOverlay isOpen={isModalOpen} onClose={closeModal}>
-        <RegistrationForm />
+        <ProductionLogForm />
       </ModalOverlay>
     </section>
   );

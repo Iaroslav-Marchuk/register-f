@@ -1,6 +1,8 @@
-import css from './RegistrationTable.module.css';
+import css from './ProductionLogTable.module.css';
 
-function RegistrationTable() {
+import { Trash2, SquarePen } from 'lucide-react';
+
+function ProductionLogTable() {
   return (
     <table className={css.table}>
       <thead className={css.header}>
@@ -14,6 +16,7 @@ function RegistrationTable() {
           <th colSpan={2}>Lote polissufuro</th>
 
           <th rowSpan={2}>Observações</th>
+          <th rowSpan={2}>Ações</th>
         </tr>
         <tr>
           <th>total</th>
@@ -37,6 +40,10 @@ function RegistrationTable() {
           <td>123456</td>
           <td>123456</td>
           <td className={css.textLeft}>Triplos</td>
+          <td>
+            <Trash2 className={css.icon} size={20} strokeWidth={1.5} />
+            <SquarePen className={css.icon} size={20} strokeWidth={1.5} />
+          </td>
         </tr>
         <tr>
           <td>1111</td>
@@ -55,4 +62,4 @@ function RegistrationTable() {
   );
 }
 
-export default RegistrationTable;
+export default ProductionLogTable;

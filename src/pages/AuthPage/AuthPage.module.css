@@ -1,0 +1,40 @@
+.wrapper {
+  width: 280px;
+  /* height: 500px; */
+  margin: 40px auto;
+  padding: 16px;
+  background-color: var(--secondary);
+  border: solid 1px var(--secondary-foreground);
+  border-radius: 32px;
+}
+
+.logo {
+  margin: 40px auto auto auto;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.btn {
+  padding: 8px 24px;
+  border: solid 2px var(--secondary-foreground);
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  background: var(--secondary-hover);
+}
+
+.btn:active {
+  transform: scale(0.98);
+  background: var(--secondary-hover);
+}

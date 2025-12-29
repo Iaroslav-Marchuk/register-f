@@ -43,7 +43,7 @@ function App() {
             path="/profile"
             element={<PrivateRoute element={<ProfilePage />} />}
           >
-            <Route index element={<ProfileDetails />} />
+            {/* <Route index element={<ProfileDetails />} /> */}
             <Route path="details" element={<ProfileDetails />} />
             <Route path="activity" element={<ProfileActivity />} />
             <Route path="settings" element={<ProfileSettings />} />

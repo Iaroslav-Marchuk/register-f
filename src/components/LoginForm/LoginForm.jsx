@@ -8,15 +8,17 @@ import { NavLink } from 'react-router-dom';
 
 function LoginForm() {
   const initialValues = {
-    name: '',
+    email: '',
     password: '',
     local: '',
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Campo obrigatório'),
+    email: Yup.string().email().required('Campo obrigatório'),
     password: Yup.string().required('Campo obrigatório'),
-    local: Yup.string().required('Campo obrigatório'),
+    local: Yup.string()
+      .oneOf(['Linha 1', 'Linha 2', 'Linha 3'])
+      .required('Campo obrigatório'),
   });
 
   const handleSubmit = async (values, actions) => {
@@ -39,16 +41,16 @@ function LoginForm() {
       >
         <Form className={css.form}>
           <div className={css.formGroup}>
-            <label htmlFor="name" className={css.label}>
-              Name
+            <label htmlFor="email" className={css.label}>
+              E-mail
             </label>
             <div className={css.inputContainer}>
               <Field
-                type="text"
-                name="name"
-                id="name"
+                type="email"
+                name="email"
+                id="email"
                 placeholder=" "
-                autoComplete="username"
+                autoComplete="email"
                 className={css.input}
               />
               <UserRound
@@ -57,7 +59,7 @@ function LoginForm() {
                 strokeWidth={1.5}
               />
             </div>
-            <ErrorMessage name="name" component="span" className={css.error} />
+            <ErrorMessage name="email" component="span" className={css.error} />
           </div>
 
           <div className={css.formGroup}>
@@ -88,10 +90,10 @@ function LoginForm() {
             </label>
             <div className={css.inputContainer}>
               <Field as="select" name="local" id="local" className={css.input}>
-                <option value="">--</option>
-                <option value="LINE_1">Linha 1</option>
-                <option value="LINE_2">Linha 2</option>
-                <option value="LINE_3">Linha 3</option>
+                <option value="">--Escolha--</option>
+                <option value="Linha 1">Linha 1</option>
+                <option value="Linha 2">Linha 2</option>
+                <option value="Linha 3">Linha 3</option>
               </Field>
             </div>
             <ErrorMessage name="local" component="span" className={css.error} />

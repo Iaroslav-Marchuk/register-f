@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { UserRound, KeyRound } from 'lucide-react';
+import { UserRound, KeyRound, Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import css from './RegistrationForm.module.css';
@@ -9,13 +9,14 @@ import { NavLink } from 'react-router-dom';
 function RegistrationForm() {
   const initialValues = {
     name: '',
+    email: '',
     password: '',
   };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Campo obrigatório'),
+    email: Yup.string().email().required('Campo obrigatório'),
     password: Yup.string().required('Campo obrigatório'),
-    local: Yup.string().required('Campo obrigatório'),
   });
 
   const handleSubmit = async (values, actions) => {
@@ -57,6 +58,24 @@ function RegistrationForm() {
               />
             </div>
             <ErrorMessage name="name" component="span" className={css.error} />
+          </div>
+
+          <div className={css.formGroup}>
+            <label htmlFor="email" className={css.label}>
+              E-mail
+            </label>
+            <div className={css.inputContainer}>
+              <Field
+                type="email"
+                name="email"
+                id="email"
+                placeholder=" "
+                autoComplete="email"
+                className={css.input}
+              />
+              <Mail className={css.inputIcon} size={24} strokeWidth={1.5} />
+            </div>
+            <ErrorMessage name="email" component="span" className={css.error} />
           </div>
 
           <div className={css.formGroup}>

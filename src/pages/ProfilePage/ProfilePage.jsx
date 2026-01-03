@@ -5,8 +5,30 @@ import { SlidersHorizontal, Activity, UserRound, DoorOpen } from 'lucide-react';
 import Container from '../../components/Container/Container.jsx';
 
 import css from './ProfilePage.module.css';
+import { useState } from 'react';
+import { logOut } from '../../redux/auth/operations.js';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
+import ConfirmContainer from '../../components/ConfirmContainer/ConfirmContainer.jsx';
 
 function ProfilePage() {
+  const dispatch = useDispatch();
+
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const openConfirm = () => setIsConfirmOpen(true);
+  const closeConfirm = () => setIsConfirmOpen(false);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logOut()).unwrap();
+      toast.success('Sessão terminada com sucesso!');
+      closeConfirm();
+    } catch (error) {
+      toast.error('Falha ao terminar a sessão. ' + error);
+    }
+  };
+
   return (
     <section className={css.section}>
       <Container>
@@ -45,7 +67,11 @@ function ProfilePage() {
               />
               Definições
             </NavLink>
-            <button type="button" className={`${css.link} ${css.btn}`}>
+            <button
+              type="button"
+              className={`${css.link} ${css.btn}`}
+              onClick={openConfirm}
+            >
               <DoorOpen className={css.btnIcon} size={20} strokeWidth={1.5} />
               Saír
             </button>
@@ -54,6 +80,13 @@ function ProfilePage() {
             <Outlet />
           </div>
         </div>
+        <ModalOverlay isOpen={isConfirmOpen} onClose={closeConfirm}>
+          <ConfirmContainer
+            text={'Tem a certeza que quer saír?'}
+            onConfirm={handleLogout}
+            onClose={closeConfirm}
+          />
+        </ModalOverlay>
       </Container>
     </section>
   );

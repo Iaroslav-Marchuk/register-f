@@ -4,9 +4,17 @@ import { UserRound, KeyRound, Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import css from './RegistrationForm.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../../redux/auth/operations.js';
+import { selectIsUserLoading } from '../../redux/auth/selectors.js';
+import { PulseLoader } from 'react-spinners';
 
 function RegistrationForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isUserLoading = useSelector(selectIsUserLoading);
+
   const initialValues = {
     name: '',
     email: '',
@@ -21,15 +29,18 @@ function RegistrationForm() {
 
   const handleSubmit = async (values, actions) => {
     try {
-      toast.success('Login efetuado com sucesso!');
+      await dispatch(register(values)).unwrap();
+      toast.success('Registado com sucesso!');
       actions.resetForm();
+      navigate('/auth/login');
     } catch (error) {
-      toast.error('Falha ao iniciar sessão.' + error);
+      toast.error('Falha ao iniciar sessão. ' + error);
     }
   };
 
   return (
-    <div className={css.wrapper}>
+    // <div className={css.wrapper}>
+    <>
       <h2 className={css.title}>Criar conta</h2>
       <h3 className={css.subtitle}>para começar agora!</h3>
       <Formik
@@ -50,6 +61,7 @@ function RegistrationForm() {
                 placeholder=" "
                 autoComplete="username"
                 className={css.input}
+                disabled={isUserLoading}
               />
               <UserRound
                 className={css.inputIcon}
@@ -72,6 +84,7 @@ function RegistrationForm() {
                 placeholder=" "
                 autoComplete="email"
                 className={css.input}
+                disabled={isUserLoading}
               />
               <Mail className={css.inputIcon} size={24} strokeWidth={1.5} />
             </div>
@@ -90,6 +103,7 @@ function RegistrationForm() {
                 placeholder=" "
                 autoComplete="new-password"
                 className={css.input}
+                disabled={isUserLoading}
               />
               <KeyRound className={css.inputIcon} size={24} strokeWidth={1.5} />
             </div>
@@ -100,8 +114,19 @@ function RegistrationForm() {
             />
           </div>
 
-          <button type="submit" className={css.btn}>
-            Registar-se
+          <button type="submit" className={css.btn} disabled={isUserLoading}>
+            {isUserLoading ? (
+              <PulseLoader
+                loading={true}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                color="#9fb9e2ff"
+                size={5}
+                className={css.spiner}
+              />
+            ) : (
+              'Registar-se'
+            )}
           </button>
         </Form>
       </Formik>
@@ -112,7 +137,8 @@ function RegistrationForm() {
         </NavLink>{' '}
         agora!
       </p>
-    </div>
+    </>
+    // </div>
   );
 }
 

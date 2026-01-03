@@ -3,18 +3,22 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import Modal from 'react-modal';
 
-import 'modern-normalize';
-
 import App from './components/App/App.jsx';
 
+import { store } from './redux/store.js';
+
+import 'modern-normalize';
 import './styles/styles.css';
+import { Provider } from 'react-redux';
 
 Modal.setAppElement('#root');
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </StrictMode>
 );

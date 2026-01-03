@@ -5,8 +5,15 @@ import toast from 'react-hot-toast';
 
 import css from './LoginForm.module.css';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsUserLoading } from '../../redux/auth/selectors.js';
+import { logIn } from '../../redux/auth/operations.js';
+import { PulseLoader } from 'react-spinners';
 
 function LoginForm() {
+  const dispatch = useDispatch();
+  const isUserLoading = useSelector(selectIsUserLoading);
+
   const initialValues = {
     email: '',
     password: '',
@@ -23,15 +30,16 @@ function LoginForm() {
 
   const handleSubmit = async (values, actions) => {
     try {
+      await dispatch(logIn(values)).unwrap();
       toast.success('Login efetuado com sucesso!');
       actions.resetForm();
     } catch (error) {
-      toast.error('Falha ao iniciar sessão.' + error);
+      toast.error('Falha ao iniciar sessão. ' + error);
     }
   };
 
   return (
-    <div className={css.wrapper}>
+    <>
       <h2 className={css.title}>Seja bem-vindo!</h2>
       <h3 className={css.subtitle}>Inicie sessão para começar</h3>
       <Formik
@@ -52,6 +60,7 @@ function LoginForm() {
                 placeholder=" "
                 autoComplete="email"
                 className={css.input}
+                disabled={isUserLoading}
               />
               <UserRound
                 className={css.inputIcon}
@@ -74,6 +83,7 @@ function LoginForm() {
                 placeholder=" "
                 autoComplete="current-password"
                 className={css.input}
+                disabled={isUserLoading}
               />
               <KeyRound className={css.inputIcon} size={24} strokeWidth={1.5} />
             </div>
@@ -89,7 +99,13 @@ function LoginForm() {
               Local do trabalho
             </label>
             <div className={css.inputContainer}>
-              <Field as="select" name="local" id="local" className={css.input}>
+              <Field
+                as="select"
+                name="local"
+                id="local"
+                className={css.input}
+                disabled={isUserLoading}
+              >
                 <option value="">--Escolha--</option>
                 <option value="Linha 1">Linha 1</option>
                 <option value="Linha 2">Linha 2</option>
@@ -99,8 +115,19 @@ function LoginForm() {
             <ErrorMessage name="local" component="span" className={css.error} />
           </div>
 
-          <button type="submit" className={css.btn}>
-            Login
+          <button type="submit" className={css.btn} disabled={isUserLoading}>
+            {isUserLoading ? (
+              <PulseLoader
+                loading={true}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                color="#9fb9e2ff"
+                size={5}
+                className={css.spiner}
+              />
+            ) : (
+              'Login'
+            )}
           </button>
         </Form>
       </Formik>
@@ -111,7 +138,7 @@ function LoginForm() {
         </NavLink>{' '}
         agora!
       </p>
-    </div>
+    </>
   );
 }
 

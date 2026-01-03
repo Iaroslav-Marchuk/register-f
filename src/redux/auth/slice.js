@@ -59,14 +59,21 @@ const authSlice = createSlice({
       })
       .addCase(logOut.rejected, handleRejected)
 
-      .addCase(refresh.pending, handlePending)
-      .addCase(refresh.fulfilled, (state, action) => {
-        state.isUserLoading = false;
-        state.user = action.payload;
-        state.isLoggedIn = true;
+      .addCase(refresh.pending, state => {
+        state.isRefreshing = true;
         state.authError = null;
       })
-      .addCase(refresh.rejected, handleRejected)
+      .addCase(refresh.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+        state.authError = null;
+      })
+      .addCase(refresh.rejected, state => {
+        state.isRefreshing = false;
+        state.isLoggedIn = false;
+        state.authError = null;
+      })
 
       .addCase(getCurrentUser.pending, handlePending)
       .addCase(getCurrentUser.fulfilled, (state, action) => {

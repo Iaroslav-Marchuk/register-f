@@ -12,7 +12,8 @@
 
   --error: #f1113e;
 
-  --muted: #a1a1aa;
+  --muted: #cbd5e1;
+  --muted-foreground: #a1a1aa;
 }
 
 [data-theme='dark'] {

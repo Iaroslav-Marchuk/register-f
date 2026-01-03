@@ -30,7 +30,8 @@ export const logIn = createAsyncThunk(
 
 export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
-    return await axiosAPI.post('/auth/logout');
+    const response = await axiosAPI.post('/auth/logout');
+    return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
@@ -38,7 +39,8 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
 
 export const refresh = createAsyncThunk('auth/refresh', async (_, thunkAPI) => {
   try {
-    return await axiosAPI.post('/auth/refresh');
+    const response = await axiosAPI.post('/auth/refresh');
+    return response.data.user;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.message);
   }

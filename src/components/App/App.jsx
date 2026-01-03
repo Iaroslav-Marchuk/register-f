@@ -18,24 +18,61 @@ import ProfileSettings from '../ProfileSettings/ProfileSettings.jsx';
 import ProfileActivity from '../ProfileActivity/ProfileActivity.jsx';
 import RegistrationForm from '../RegistrationForm/RegistrationForm.jsx';
 import LoginForm from '../LoginForm/LoginForm.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsRefreshing } from '../../redux/auth/selectors.js';
+import { useEffect } from 'react';
+import { refresh } from '../../redux/auth/operations.js';
+import GlobalLoader from '../GlobalLoader/GlobalLoader.jsx';
+import LoginPage from '../../pages/LoginPage/LoginPage.jsx';
+import RegistrationPage from '../../pages/RegistrationPage/RegistrationPage.jsx';
 
 function App() {
-  return (
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    <GlobalLoader loadingState={isRefreshing} />
+  ) : (
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Navigate to="/auth" />} />
-
         <Route
           path="/auth"
-          // element={
-          //   <RestrictedRoute redirectTo="/main" element={<AuthPage />} />
-          // }
+          element={
+            <RestrictedRoute redirectTo="/main" element={<AuthPage />} />
+          }
+        />
+        <Route
+          path="/auth/login"
+          element={
+            <RestrictedRoute redirectTo="/main" element={<LoginPage />} />
+          }
+        />
+
+        <Route
+          path="/auth/register"
+          element={
+            <RestrictedRoute
+              redirectTo="/main"
+              element={<RegistrationPage />}
+            />
+          }
+        />
+        {/* <Route
+          path="/auth"
+          element={
+            <RestrictedRoute redirectTo="/main" element={<AuthPage />} />
+          }
         >
           <Route index element={<AuthPage />} />
-          <Route path="login" element={<LoginForm />} />
+          <Route path="/auth/login" element={<LoginForm />} />
           <Route path="register" element={<RegistrationForm />} />
-        </Route>
+        </Route> */}
 
         <Route element={<Layout />}>
           <Route

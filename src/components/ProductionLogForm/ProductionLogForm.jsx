@@ -7,7 +7,7 @@ import css from './ProductionLogForm.module.css';
 function ProductionLogForm() {
   const initialValues = {
     operator: '',
-    line: '',
+    local: '',
     ep: '',
     client: '',
     order: {

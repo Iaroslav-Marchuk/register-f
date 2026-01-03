@@ -9,8 +9,14 @@ import ProductionLogTable from '../../components/ProductionLogTable/ProductionLo
 import { useState } from 'react';
 
 import css from './MainPage.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../redux/auth/selectors.js';
 
 function MainPage() {
+  // const dispatch = useDispatch();
+
+  const user = useSelector(selectUser);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -32,8 +38,8 @@ function MainPage() {
           </button>
 
           <div className={css.info}>
-            <span className={css.span}>Linha: 1</span>
-            <span className={css.span}>Responsavel: Coloborador1</span>
+            <span className={css.span}>{user.local}</span>
+            <span className={css.span}>Responsavel: {user.name}</span>
             <span className={css.span}>{`Data: ${date}`}</span>
           </div>
         </div>

@@ -6,6 +6,19 @@ import Summary from '../../components/Summary/Summary.jsx';
 import css from './ReportPage.module.css';
 
 function ReportPage() {
+  //  const changeSearchQuery = event => {
+  //    const newQuery = event.target.value;
+  //    const nextSearchParams = new URLSearchParams(searchParams);
+
+  //    if (newQuery !== '') {
+  //      nextSearchParams.set('query', newQuery);
+  //    } else {
+  //      nextSearchParams.delete('query');
+  //    }
+
+  //    setSearchParams(nextSearchParams);
+  // };
+
   return (
     <section className={css.section}>
       <Container>

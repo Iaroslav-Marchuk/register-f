@@ -53,3 +53,10 @@
   border: solid 2px var(--secondary-foreground);
   border-radius: 20px;
 }
+
+.noResults {
+  font-style: italic;
+  color: var(--muted-foreground);
+  margin-top: 100px;
+  text-align: center;
+}

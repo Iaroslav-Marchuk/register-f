@@ -3,11 +3,13 @@ import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 
 import css from './ProductionLogForm.module.css';
+import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
+import { useDispatch } from 'react-redux';
 
 function ProductionLogForm() {
+  const dispatch = useDispatch();
+
   const initialValues = {
-    operator: '',
-    local: '',
     ep: '',
     client: '',
     order: {
@@ -51,16 +53,41 @@ function ProductionLogForm() {
     }),
     notes: Yup.string()
       .min(3, 'Mínimo 3 caracteres')
-      .max(40, 'Máximo de 40 caracteres')
-      .required('Campo obrigatório'),
+      .max(40, 'Máximo de 40 caracteres'),
   });
 
   const handleSubmit = async (values, actions) => {
+    const payload = {
+      ep: Number(values.ep),
+      client: values.client,
+      order: {
+        total: Number(values.order.total),
+        completed: Number(values.order.completed),
+        m2: Number(values.order.m2),
+      },
+      butylLot: String(values.butylLot),
+      silicaLot: String(values.silicaLot),
+      polysulfideLot: {
+        white: String(values.polysulfideLot.white),
+        black: String(values.polysulfideLot.black),
+      },
+      notes: String(values.notes),
+    };
+
     try {
+      await dispatch(createOrder(payload)).unwrap();
       toast.success('Pedido adicionado com sucesso!');
+      dispatch(
+        getTodayOrders({
+          page: 1,
+          perPage: 10,
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+        })
+      );
       actions.resetForm();
     } catch (error) {
-      toast.error('Falha ao adicionar novo pedido: ', error);
+      toast.error('Falha ao adicionar novo pedido: ' + error);
     }
   };
 

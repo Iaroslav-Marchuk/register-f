@@ -1,0 +1,36 @@
+.textLeft {
+  text-align: start;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.icon {
+  stroke: var(--secondary-foreground);
+}
+
+.delete {
+  stroke: var(--error);
+}

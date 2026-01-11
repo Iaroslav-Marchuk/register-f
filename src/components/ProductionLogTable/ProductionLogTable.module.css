@@ -29,10 +29,32 @@ tbody td {
   background-color: var(--secondary);
 }
 
-.textLeft {
-  text-align: start;
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.icon {
+.arrowIcon {
   stroke: var(--secondary-foreground);
+  size: 16px;
+}
+
+.cellBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cellBtn:hover {
+  transform: scale(1.1);
+}
+
+.cellBtn:active {
+  transform: scale(0.98);
 }

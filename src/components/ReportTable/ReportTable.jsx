@@ -1,6 +1,7 @@
+import ReportTableRow from '../ReportTableRow/ReportTableRow.jsx';
 import css from './ReportTable.module.css';
 
-function ReportTable() {
+function ReportTable({ ordersList, user }) {
   return (
     <table className={css.table}>
       <thead className={css.header}>
@@ -15,6 +16,7 @@ function ReportTable() {
 
           <th rowSpan={2}>Observações</th>
           <th rowSpan={2}>Responsável</th>
+          <th rowSpan={2}>Data</th>
         </tr>
         <tr>
           <th>total</th>
@@ -27,31 +29,9 @@ function ReportTable() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1111</td>
-          <td className={css.textLeft}>Cliente1</td>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>123456</td>
-          <td>123456</td>
-          <td>123456</td>
-          <td>123456</td>
-          <td className={css.textLeft}>Triplos</td>
-          <td className={css.textLeft}>Clolborador1</td>
-        </tr>
-        <tr>
-          <td>1111</td>
-          <td>Cliente1</td>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>123456</td>
-          <td>123456</td>
-          <td>123456</td>
-          <td>123456</td>
-          <td>Triplos</td>
-        </tr>
+        {ordersList.map((order, index) => (
+          <ReportTableRow key={index} order={order} user={user} />
+        ))}
       </tbody>
     </table>
   );

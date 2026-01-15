@@ -3,28 +3,41 @@ import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 
 import css from './ProductionLogForm.module.css';
-import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
-import { useDispatch } from 'react-redux';
 
-function ProductionLogForm() {
-  const dispatch = useDispatch();
-
-  const initialValues = {
-    ep: '',
-    client: '',
-    order: {
-      total: '',
-      completed: '',
-      m2: '',
-    },
-    butylLot: '',
-    silicaLot: '',
-    polysulfideLot: {
-      white: '',
-      black: '',
-    },
-    notes: '',
-  };
+function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
+  const initialValues = order
+    ? {
+        ep: order.ep,
+        client: order.client,
+        order: {
+          total: order.order.total,
+          completed: order.order.completed,
+          m2: order.order.m2,
+        },
+        butylLot: order.butylLot,
+        silicaLot: order.silicaLot,
+        polysulfideLot: {
+          white: order.polysulfideLot.white,
+          black: order.polysulfideLot.black,
+        },
+        notes: order.notes,
+      }
+    : {
+        ep: '',
+        client: '',
+        order: {
+          total: '',
+          completed: '',
+          m2: '',
+        },
+        butylLot: '',
+        silicaLot: '',
+        polysulfideLot: {
+          white: '',
+          black: '',
+        },
+        notes: '',
+      };
 
   const validationSchema = Yup.object().shape({
     ep: Yup.number()
@@ -57,45 +70,55 @@ function ProductionLogForm() {
   });
 
   const handleSubmit = async (values, actions) => {
-    const payload = {
-      ep: Number(values.ep),
-      client: values.client,
-      order: {
-        total: Number(values.order.total),
-        completed: Number(values.order.completed),
-        m2: Number(values.order.m2),
-      },
-      butylLot: String(values.butylLot),
-      silicaLot: String(values.silicaLot),
-      polysulfideLot: {
-        white: String(values.polysulfideLot.white),
-        black: String(values.polysulfideLot.black),
-      },
-      notes: String(values.notes),
-    };
-
     try {
-      await dispatch(createOrder(payload)).unwrap();
-      toast.success('Pedido adicionado com sucesso!');
-      dispatch(
-        getTodayOrders({
-          page: 1,
-          perPage: 10,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
-        })
-      );
+      await onSubmit(values, actions);
       actions.resetForm();
     } catch (error) {
-      toast.error('Falha ao adicionar novo pedido: ' + error);
+      toast.error('Erro: ' + error);
     }
   };
+
+  // const handleSubmit = async (values, actions) => {
+  //   const payload = {
+  //     ep: Number(values.ep),
+  //     client: values.client,
+  //     order: {
+  //       total: Number(values.order.total),
+  //       completed: Number(values.order.completed),
+  //       m2: Number(values.order.m2),
+  //     },
+  //     butylLot: String(values.butylLot),
+  //     silicaLot: String(values.silicaLot),
+  //     polysulfideLot: {
+  //       white: String(values.polysulfideLot.white),
+  //       black: String(values.polysulfideLot.black),
+  //     },
+  //     notes: String(values.notes),
+  //   };
+
+  //   try {
+  //     await dispatch(createOrder(payload)).unwrap();
+  //     toast.success('Pedido adicionado com sucesso!');
+  //     dispatch(
+  //       getTodayOrders({
+  //         page: 1,
+  //         perPage: 10,
+  //         sortBy: 'createdAt',
+  //         sortOrder: 'desc',
+  //       })
+  //     );
+  //     actions.resetForm();
+  //   } catch (error) {
+  //     toast.error('Falha ao adicionar novo pedido: ' + error);
+  //   }
+  // };
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
+      enableReinitialize={true}
       validateOnBlur={true}
       validateOnChange={false}
     >
@@ -240,7 +263,7 @@ function ProductionLogForm() {
         </div>
 
         <button type="submit" className={css.btn}>
-          Adicionar
+          {isEdit ? 'Atualizar' : 'Adicionar'}
         </button>
       </Form>
     </Formik>

@@ -12,13 +12,15 @@ import css from './MainPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
 import { useSearchParams } from 'react-router-dom';
-import { getTodayOrders } from '../../redux/orders/operations.js';
+import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
 import {
   selectTodayOrders,
-  selectTodayOrdersIsLoading,
+  // selectTodayOrdersIsLoading,
   selectTodayOrdersTotalPages,
 } from '../../redux/orders/selectors.js';
 import { PulseLoader } from 'react-spinners';
+import Pagination from '../../components/Pagination/Pagination.jsx';
+import toast from 'react-hot-toast';
 
 function MainPage() {
   const dispatch = useDispatch();
@@ -26,7 +28,8 @@ function MainPage() {
   const user = useSelector(selectUser);
   const todayOrders = useSelector(selectTodayOrders);
   const totalPages = useSelector(selectTodayOrdersTotalPages);
-  const isLoading = useSelector(selectTodayOrdersIsLoading);
+
+  // const isLoading = useSelector(selectTodayOrdersIsLoading);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
@@ -46,6 +49,11 @@ function MainPage() {
     });
   };
 
+  const handlePageChange = newPage => {
+    searchParams.set('page', newPage);
+    setSearchParams(searchParams);
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -56,16 +64,42 @@ function MainPage() {
     year: 'numeric',
   });
 
-  const handleLoadMore = () => {
-    setSearchParams(prev => {
-      const params = new URLSearchParams(prev);
-      params.set('page', page + 1);
-      return params;
-    });
-  };
+  const hasMoreThan2Pages = totalPages > 1;
 
-  const hasOrders = todayOrders.length > 0;
-  const isNotLastPage = page < totalPages;
+  const handleCreateOrder = async (values, actions) => {
+    const payload = {
+      ep: Number(values.ep),
+      client: values.client,
+      order: {
+        total: Number(values.order.total),
+        completed: Number(values.order.completed),
+        m2: Number(values.order.m2),
+      },
+      butylLot: String(values.butylLot),
+      silicaLot: String(values.silicaLot),
+      polysulfideLot: {
+        white: String(values.polysulfideLot.white),
+        black: String(values.polysulfideLot.black),
+      },
+      notes: String(values.notes),
+    };
+
+    try {
+      await dispatch(createOrder(payload)).unwrap();
+      toast.success('Pedido adicionado com sucesso!');
+      dispatch(
+        getTodayOrders({
+          page: 1,
+          perPage: 10,
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+        })
+      );
+      actions.resetForm();
+    } catch (error) {
+      toast.error('Falha ao adicionar novo pedido: ' + error);
+    }
+  };
 
   useEffect(() => {
     dispatch(getTodayOrders({ page, perPage, sortBy, sortOrder }));
@@ -98,26 +132,12 @@ function MainPage() {
             />
             <Summary />
 
-            {hasOrders && isNotLastPage && (
-              <button
-                type="button"
-                onClick={handleLoadMore}
-                disabled={isLoading}
-                className={css.loadMoreBtn}
-              >
-                {isLoading ? (
-                  <PulseLoader
-                    loading={true}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                    color="#9fb9e2ff"
-                    size={5}
-                    className={css.spiner}
-                  />
-                ) : (
-                  'Mais...'
-                )}
-              </button>
+            {hasMoreThan2Pages && (
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             )}
           </>
         ) : (
@@ -128,7 +148,7 @@ function MainPage() {
       </Container>
 
       <ModalOverlay isOpen={isModalOpen} onClose={closeModal}>
-        <ProductionLogForm />
+        <ProductionLogForm isEdit={false} onSubmit={handleCreateOrder} />
       </ModalOverlay>
     </section>
   );

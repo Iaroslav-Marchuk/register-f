@@ -14,6 +14,7 @@ import { logOut } from '../../redux/auth/operations.js';
 import { useState } from 'react';
 import ModalOverlay from '../ModalOverlay/ModalOverlay.jsx';
 import ConfirmContainer from '../ConfirmContainer/ConfirmContainer.jsx';
+import clsx from 'clsx';
 
 function Navigation() {
   const dispatch = useDispatch();
@@ -36,33 +37,33 @@ function Navigation() {
     <nav className={css.navigation}>
       <NavLink
         to="/main"
-        className={css.link}
         data-tooltip="Registo"
         aria-label="Registo"
+        className={({ isActive }) => clsx(css.link, isActive && css.active)}
       >
         <FilePlusCorner className={css.icon} size={32} strokeWidth={1.5} />
       </NavLink>
       <NavLink
         to="/report"
-        className={css.link}
         data-tooltip="Relatórios"
         aria-label="Relatórios"
+        className={({ isActive }) => clsx(css.link, isActive && css.active)}
       >
         <ListCheck className={css.icon} size={32} strokeWidth={1.5} />
       </NavLink>
       <NavLink
         to="/stats"
-        className={css.link}
         data-tooltip="Estatísticas"
         aria-label="Estatísticas"
+        className={({ isActive }) => clsx(css.link, isActive && css.active)}
       >
         <ChartLine className={css.icon} size={32} strokeWidth={1.5} />
       </NavLink>
       <NavLink
         to="/profile"
-        className={css.link}
         data-tooltip="Perfil"
         aria-label="Perfil"
+        className={({ isActive }) => clsx(css.link, isActive && css.active)}
       >
         <CircleUserRound className={css.icon} size={32} strokeWidth={1.5} />
       </NavLink>

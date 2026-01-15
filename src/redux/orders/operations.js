@@ -53,6 +53,18 @@ export const createOrder = createAsyncThunk(
   }
 );
 
+export const updateOrder = createAsyncThunk(
+  'orders/updateOrder',
+  async ({ orderId, values }, thunkAPI) => {
+    try {
+      const response = await axiosAPI.patch(`/orders/${orderId}`, values);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const deleteOrder = createAsyncThunk(
   'orders/deleteOrder',
   async (orderId, thunkAPI) => {

@@ -51,3 +51,11 @@
   transform: scale(1.05);
   background: var(--secondary-hover);
 }
+
+.link:active {
+  transform: scale(0.98);
+}
+
+.active {
+  background-color: var(--secondary-hover);
+}

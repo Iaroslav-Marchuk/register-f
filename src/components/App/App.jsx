@@ -16,8 +16,7 @@ import PrivateRoute from '../PrivateRoute.jsx';
 import ProfileDetails from '../ProfileDetails/ProfileDetails.jsx';
 import ProfileSettings from '../ProfileSettings/ProfileSettings.jsx';
 import ProfileActivity from '../ProfileActivity/ProfileActivity.jsx';
-import RegistrationForm from '../RegistrationForm/RegistrationForm.jsx';
-import LoginForm from '../LoginForm/LoginForm.jsx';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsRefreshing } from '../../redux/auth/selectors.js';
 import { useEffect } from 'react';
@@ -63,16 +62,6 @@ function App() {
             />
           }
         />
-        {/* <Route
-          path="/auth"
-          element={
-            <RestrictedRoute redirectTo="/main" element={<AuthPage />} />
-          }
-        >
-          <Route index element={<AuthPage />} />
-          <Route path="/auth/login" element={<LoginForm />} />
-          <Route path="register" element={<RegistrationForm />} />
-        </Route> */}
 
         <Route element={<Layout />}>
           <Route

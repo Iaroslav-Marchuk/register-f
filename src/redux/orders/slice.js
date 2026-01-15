@@ -4,6 +4,7 @@ import {
   deleteOrder,
   getAllOrders,
   getTodayOrders,
+  updateOrder,
 } from './operations.js';
 
 const handlePending = key => state => {
@@ -22,7 +23,7 @@ const ordersSlice = createSlice({
     all: { orders: [], pagination: {}, isLoading: false, error: null },
     today: { orders: [], pagination: {}, isLoading: false, error: null },
     create: { isLoading: false, error: null },
-    edit: { isLoading: false, error: null },
+    update: { isLoading: false, error: null },
     delete: { isLoading: false, error: null },
   },
   reducers: {},
@@ -61,6 +62,19 @@ const ordersSlice = createSlice({
         state.create.isLoading = false;
       })
       .addCase(createOrder.rejected, handleRejected('create'))
+
+      .addCase(updateOrder.pending, handlePending('update'))
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        state.update.isLoading = false;
+        const updatedOrder = action.payload.updatedOrder;
+        const index = state.today.orders.findIndex(
+          order => order._id === updatedOrder._id
+        );
+        if (index !== -1) {
+          state.today.orders[index] = updatedOrder;
+        }
+      })
+      .addCase(updateOrder.rejected, handleRejected('update'))
 
       .addCase(deleteOrder.pending, handlePending('delete'))
       .addCase(deleteOrder.fulfilled, (state, action) => {

@@ -74,3 +74,20 @@
   transform: scale(0.98);
   background: #00897b;
 }
+
+.selectWrapper {
+  position: relative;
+  display: inline-block;
+  width: 110px;
+}
+
+.select {
+  width: 100%;
+  padding: 8px 24px;
+  background-color: #26a69a;
+  border: solid 2px #004d40;
+  color: var(--primary);
+  border-radius: 8px;
+  outline: none;
+  appearance: none;
+}

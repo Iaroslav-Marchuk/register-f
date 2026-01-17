@@ -9,7 +9,7 @@ import {
   selectAllOrders,
   selectAllOrdersTotalPages,
 } from '../../redux/orders/selectors.js';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { getAllOrders } from '../../redux/orders/operations.js';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination.jsx';
@@ -30,7 +30,14 @@ function ReportPage() {
   const perPage = Number(searchParams.get('perPage')) || 10;
   const sortBy = searchParams.get('sortBy') || 'createdAt';
   const sortOrder = searchParams.get('sortOrder') || 'desc';
-  const filter = searchParams.get('filter') || '';
+  const filter = useMemo(() => {
+    return {
+      client: searchParams.get('client') || undefined,
+      ep: searchParams.get('ep') || undefined,
+      local: searchParams.get('local') || undefined,
+      createdAt: searchParams.get('createdAt') || undefined,
+    };
+  }, [searchParams]);
 
   const handleSortChange = (newSortBy, newSortOrder) => {
     setSearchParams(prev => {
@@ -49,19 +56,6 @@ function ReportPage() {
     setSearchParams(searchParams);
   };
 
-  const handleFilterChange = event => {
-    const newFilter = event.target.value;
-    const nextSearchParams = new URLSearchParams(searchParams);
-
-    if (newFilter !== '') {
-      nextSearchParams.set('filter', newFilter);
-    } else {
-      nextSearchParams.delete('filter');
-    }
-
-    setSearchParams(nextSearchParams);
-  };
-
   useEffect(() => {
     dispatch(getAllOrders({ page, perPage, sortBy, sortOrder, filter }));
   }, [page, perPage, sortBy, sortOrder, filter, dispatch]);
@@ -70,7 +64,7 @@ function ReportPage() {
     <section className={css.section}>
       <Container>
         <h1 className={css.title}>Relatório</h1>
-        <SearchBox onFilterChange={handleFilterChange} />
+        <SearchBox />
 
         {allOrders.length > 0 ? (
           <>
@@ -92,7 +86,7 @@ function ReportPage() {
             )}
           </>
         ) : (
-          <p className={css.noResults}>Ainda não foi feito nenhum pedido!</p>
+          <p className={css.noResults}>Sem resultados!</p>
         )}
       </Container>
     </section>

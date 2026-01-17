@@ -15,10 +15,8 @@ import { useSearchParams } from 'react-router-dom';
 import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
 import {
   selectTodayOrders,
-  // selectTodayOrdersIsLoading,
   selectTodayOrdersTotalPages,
 } from '../../redux/orders/selectors.js';
-import { PulseLoader } from 'react-spinners';
 import Pagination from '../../components/Pagination/Pagination.jsx';
 import toast from 'react-hot-toast';
 
@@ -28,8 +26,6 @@ function MainPage() {
   const user = useSelector(selectUser);
   const todayOrders = useSelector(selectTodayOrders);
   const totalPages = useSelector(selectTodayOrdersTotalPages);
-
-  // const isLoading = useSelector(selectTodayOrdersIsLoading);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;

@@ -16,6 +16,7 @@ function ReportTable({ ordersList, user }) {
 
           <th rowSpan={2}>Observações</th>
           <th rowSpan={2}>Responsável</th>
+          <th rowSpan={2}>Local</th>
           <th rowSpan={2}>Data</th>
         </tr>
         <tr>

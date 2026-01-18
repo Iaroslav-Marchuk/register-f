@@ -1,19 +1,18 @@
 .wrapper {
   display: flex;
   gap: 20px;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 20px;
 }
 
 .searchbox {
   position: relative;
-  width: 380px;
 }
 
 .input {
   outline: none;
-  width: 380px;
+  width: 360px;
   padding: 8px 40px 8px 40px;
   border: 1px solid var(--secondary-foreground);
   background-color: var(--background);
@@ -55,30 +54,17 @@
   transform-origin: center;
 }
 
-.btn {
-  padding: 8px 24px;
-  background-color: #26a69a;
-  border: solid 2px #004d40;
-  color: var(--primary);
-  font-weight: 600;
-  border-radius: 20px;
-  transition: all 0.2s ease-in-out;
-}
-
-.btn:hover {
-  transform: scale(1.03);
-  background: #00897b;
-}
-
-.btn:active {
-  transform: scale(0.98);
-  background: #00897b;
+.btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .selectWrapper {
   position: relative;
   display: inline-block;
-  width: 110px;
+  width: 160px;
 }
 
 .select {
@@ -90,4 +76,21 @@
   border-radius: 8px;
   outline: none;
   appearance: none;
+  text-align: center;
+}
+
+.dateInput {
+  width: 160px;
+  padding: 8px 12px;
+  border: 2px solid #004d40;
+  border-radius: 8px;
+  background-color: #26a69a;
+  color: var(--primary);
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dateInput::placeholder {
+  color: var(--primary);
 }

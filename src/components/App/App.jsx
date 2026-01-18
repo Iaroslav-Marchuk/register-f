@@ -34,7 +34,7 @@ function App() {
   }, [dispatch]);
 
   return isRefreshing ? (
-    <GlobalLoader loadingState={isRefreshing} />
+    <GlobalLoader />
   ) : (
     <>
       <Toaster position="top-right" reverseOrder={false} />

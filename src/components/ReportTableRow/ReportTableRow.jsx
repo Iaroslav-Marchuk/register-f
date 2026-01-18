@@ -2,6 +2,7 @@ import css from './ReportTableRow.module.css';
 
 function ReportTableRow({ order, user }) {
   const {
+    local,
     ep,
     client,
     order: { total, completed, m2 } = {},
@@ -32,6 +33,7 @@ function ReportTableRow({ order, user }) {
         <td>{black}</td>
         <td className={css.textLeft}>{notes}</td>
         <td>{user.name}</td>
+        <td>{local}</td>
         <td>{date}</td>
       </tr>
     </>

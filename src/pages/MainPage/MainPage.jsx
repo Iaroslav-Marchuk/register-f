@@ -15,10 +15,14 @@ import { useSearchParams } from 'react-router-dom';
 import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
 import {
   selectTodayOrders,
+  selectTodayOrdersIsLoading,
   selectTodayOrdersTotalPages,
 } from '../../redux/orders/selectors.js';
 import Pagination from '../../components/Pagination/Pagination.jsx';
 import toast from 'react-hot-toast';
+
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 function MainPage() {
   const dispatch = useDispatch();
@@ -26,6 +30,7 @@ function MainPage() {
   const user = useSelector(selectUser);
   const todayOrders = useSelector(selectTodayOrders);
   const totalPages = useSelector(selectTodayOrdersTotalPages);
+  const isOrdersLoading = useSelector(selectTodayOrdersIsLoading);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
@@ -118,7 +123,12 @@ function MainPage() {
           </div>
         </div>
 
-        {todayOrders.length > 0 ? (
+        {isOrdersLoading ? (
+          <Stack spacing={2}>
+            <Skeleton variant="rectangular" height={382} />
+            <Skeleton variant="rectangular" height={36} />
+          </Stack>
+        ) : todayOrders.length > 0 ? (
           <>
             <ProductionLogTable
               ordersList={todayOrders}

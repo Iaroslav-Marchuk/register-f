@@ -73,29 +73,21 @@ function SearchBox() {
     });
   };
 
+  const handleSelectClear = () => {
+    setQuery(prev => {
+      const params = new URLSearchParams(prev);
+      params.delete('local');
+      params.delete('createdAt');
+      params.set('page', 1);
+      return params;
+    });
+  };
+
+  const hasInputValue = query.has('ep') || query.has('client');
+  const hasDateOrLocalValue = query.has('local') || query.has('createdAt');
+
   return (
     <div className={css.wrapper}>
-      <div className={css.searchbox}>
-        <Search className={css.inputIcon} />
-        <input
-          className={css.input}
-          type="text"
-          placeholder="Digite número EP ou nome do cliente..."
-          value={inputValue}
-          onChange={handleInputChange}
-        />
-
-        {query.length > 0 && (
-          <button
-            type="button"
-            onClick={handleInputClear}
-            className={css.clear}
-          >
-            <CircleX size={24} strokeWidth={1} />
-          </button>
-        )}
-      </div>
-
       <div className={css.btns}>
         <div className={css.selectWrapper}>
           <select
@@ -104,7 +96,7 @@ function SearchBox() {
             className={css.select}
           >
             <option value="" disabled>
-              --
+              Escolha o local
             </option>
             <option value="Linha 1">Linha 1</option>
             <option value="Linha 2">Linha 2</option>
@@ -116,7 +108,35 @@ function SearchBox() {
           selected={dateValue}
           onChange={handleDateChange}
           placeholderText="Escolha a data"
+          className={css.dateInput}
         />
+
+        {hasDateOrLocalValue && (
+          <button type="button" onClick={handleSelectClear}>
+            <CircleX size={24} strokeWidth={1} />
+          </button>
+        )}
+      </div>
+
+      <div className={css.searchbox}>
+        <Search className={css.inputIcon} />
+        <input
+          className={css.input}
+          type="text"
+          placeholder="Digite número EP ou nome do cliente..."
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+
+        {hasInputValue && (
+          <button
+            type="button"
+            onClick={handleInputClear}
+            className={css.clear}
+          >
+            <CircleX size={24} strokeWidth={1} />
+          </button>
+        )}
       </div>
     </div>
   );

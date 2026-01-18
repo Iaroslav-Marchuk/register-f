@@ -2,8 +2,7 @@ import { FadeLoader } from 'react-spinners';
 
 import css from './GlobalLoader.module.css';
 
-function GlobalLoader({ loadingState }) {
-  if (!loadingState) return null;
+function GlobalLoader() {
   return (
     <div className={css.overlay}>
       <FadeLoader

@@ -7,6 +7,7 @@ import Summary from '../../components/Summary/Summary.jsx';
 import css from './ReportPage.module.css';
 import {
   selectAllOrders,
+  selectAllOrdersIsLoading,
   selectAllOrdersTotalPages,
 } from '../../redux/orders/selectors.js';
 import { useEffect, useMemo } from 'react';
@@ -15,13 +16,16 @@ import { useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination.jsx';
 import { selectUser } from '../../redux/auth/selectors.js';
 
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
 function ReportPage() {
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
   const allOrders = useSelector(selectAllOrders);
-
   const totalPages = useSelector(selectAllOrdersTotalPages);
+  const isOrdersLoading = useSelector(selectAllOrdersIsLoading);
 
   const hasMoreThan2Pages = totalPages > 1;
 
@@ -66,7 +70,12 @@ function ReportPage() {
         <h1 className={css.title}>Relatório</h1>
         <SearchBox />
 
-        {allOrders.length > 0 ? (
+        {isOrdersLoading ? (
+          <Stack spacing={2}>
+            <Skeleton variant="rectangular" height={382} />
+            <Skeleton variant="rectangular" height={36} />
+          </Stack>
+        ) : allOrders.length > 0 ? (
           <>
             <ReportTable
               ordersList={allOrders}

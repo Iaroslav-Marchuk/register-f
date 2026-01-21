@@ -1,15 +1,16 @@
 import css from './Summary.module.css';
 
-function Summary() {
+function Summary({ completed, m2, ratio }) {
   return (
     <div className={css.resume}>
       <span className={css.span}>Total</span>
       <ul className={css.list}>
-        <li className={css.item}>100 vidros</li>
+        <li className={css.item}>{`${completed} vidros`}</li>
         <li className={css.item}>
-          300m<sup>2</sup>.
+          {`${m2.toFixed(2)} m`}
+          <sup>2</sup>.
         </li>
-        <li className={css.item}>Ratio - 1.05,</li>
+        <li className={css.item}>{`Ratio - ${ratio.toFixed(2)}`},</li>
       </ul>
     </div>
   );

@@ -11,6 +11,11 @@ export const selectAllOrdersIsLoading = state => state.orders.all.isLoading;
 export const selectAllOrdersError = state => state.orders.all.error;
 
 export const selectTodayOrders = state => state.orders.today.orders;
+
+export const selectTotalCompleted = state =>
+  state.orders.today.stats.totalCompleted;
+export const seletcTotalM2 = state => state.orders.today.stats.totalM2;
+export const selectRation = state => state.orders.today.stats.ratio;
 export const selectTodayOrdersTotalItems = state =>
   state.orders.today.pagination.totalItems;
 export const selectTodayOrdersTotalPages = state =>

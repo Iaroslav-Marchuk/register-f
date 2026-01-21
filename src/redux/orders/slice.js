@@ -17,11 +17,24 @@ const handleRejected = key => (state, action) => {
   state[key].error = action.payload;
 };
 
+const calculateStats = orders => {
+  const totalCompleted = orders.reduce((sum, o) => sum + o.order.completed, 0);
+  const totalM2 = orders.reduce((sum, o) => sum + o.order.m2, 0);
+  const ratio = totalCompleted ? totalM2 / totalCompleted : 0;
+  return { totalCompleted, totalM2, ratio };
+};
+
 const ordersSlice = createSlice({
   name: 'orders',
   initialState: {
     all: { orders: [], pagination: {}, isLoading: false, error: null },
-    today: { orders: [], pagination: {}, isLoading: false, error: null },
+    today: {
+      orders: [],
+      pagination: {},
+      stats: {},
+      isLoading: false,
+      error: null,
+    },
     create: { isLoading: false, error: null },
     update: { isLoading: false, error: null },
     delete: { isLoading: false, error: null },
@@ -45,13 +58,28 @@ const ordersSlice = createSlice({
 
       .addCase(getTodayOrders.pending, handlePending('today'))
       .addCase(getTodayOrders.fulfilled, (state, action) => {
-        const { orders, ...pagination } = action.payload;
+        const {
+          orders,
+          totalItems,
+          totalPages,
+          hasNextPage,
+          hasPreviousPage,
+          totalCompleted,
+          totalM2,
+          ratio,
+        } = action.payload;
+
         state.today.orders = orders;
+        state.today.stats = {
+          totalCompleted,
+          totalM2,
+          ratio,
+        };
         state.today.pagination = {
-          totalItems: pagination.totalItems,
-          totalPages: pagination.totalPages,
-          hasNextPage: pagination.hasNextPage,
-          hasPreviousPage: pagination.hasPreviousPage,
+          totalItems,
+          totalPages,
+          hasNextPage,
+          hasPreviousPage,
         };
         state.today.isLoading = false;
       })
@@ -73,6 +101,7 @@ const ordersSlice = createSlice({
         if (index !== -1) {
           state.today.orders[index] = updatedOrder;
         }
+        state.today.stats = calculateStats(state.today.orders);
       })
       .addCase(updateOrder.rejected, handleRejected('update'))
 
@@ -82,6 +111,7 @@ const ordersSlice = createSlice({
         state.today.orders = state.today.orders.filter(
           order => order._id !== action.payload
         );
+        state.today.stats = calculateStats(state.today.orders);
       })
       .addCase(deleteOrder.rejected, handleRejected('delete'));
   },

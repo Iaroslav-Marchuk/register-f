@@ -14,7 +14,7 @@ function ProductionLogTableRow({ order }) {
   const {
     ep,
     client,
-    order: { total, completed, m2 } = {},
+    order: { total, completed, missed = null, m2 } = {},
     butylLot,
     silicaLot,
     polysulfideLot: { white, black } = {},
@@ -103,12 +103,14 @@ function ProductionLogTableRow({ order }) {
         <td className={css.textLeft}>{client}</td>
         <td>{total}</td>
         <td>{completed}</td>
-        <td>{m2}</td>
+        <td>{m2.toFixed(2)}</td>
         <td>{butylLot}</td>
         <td>{silicaLot}</td>
         <td>{white}</td>
         <td>{black}</td>
-        <td className={css.textLeft}>{notes}</td>
+        <td className={css.textLeft}>
+          {notes} {missed ? `Faltam ${missed}` : ''}
+        </td>
         <td>
           <div className={css.btns}>
             <button className={css.btn} onClick={openEdit}>

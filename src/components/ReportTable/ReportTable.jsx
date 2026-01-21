@@ -1,13 +1,66 @@
+import {
+  ArrowDownUp,
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
+} from 'lucide-react';
+
 import ReportTableRow from '../ReportTableRow/ReportTableRow.jsx';
+
 import css from './ReportTable.module.css';
 
-function ReportTable({ ordersList, user }) {
+function ReportTable({ ordersList, user, sortBy, sortOrder, onSortChange }) {
+  const handleSortClick = sortField => {
+    const newOrder =
+      sortBy === sortField && sortOrder === 'desc' ? 'asc' : 'desc';
+    onSortChange(sortField, newOrder);
+  };
+
+  const getSortIcon = sortField => {
+    if (sortBy === sortField) {
+      return sortOrder === 'asc' ? (
+        <ArrowUpNarrowWide
+          className={css.arrowIcon}
+          size={20}
+          strokeWidth={2}
+        />
+      ) : (
+        <ArrowDownWideNarrow
+          className={css.arrowIcon}
+          size={20}
+          strokeWidth={2}
+        />
+      );
+    }
+
+    return <ArrowDownUp className={css.arrowIcon} size={20} strokeWidth={2} />;
+  };
+
   return (
     <table className={css.table}>
       <thead className={css.header}>
         <tr>
-          <th rowSpan={2}>EP</th>
-          <th rowSpan={2}>Cliente</th>
+          <th rowSpan={2}>
+            <div className={css.cell}>
+              <button
+                className={css.cellBtn}
+                onClick={() => handleSortClick('ep')}
+              >
+                {getSortIcon('ep')}
+              </button>
+              <span>EP</span>
+            </div>
+          </th>
+          <th rowSpan={2}>
+            <div className={css.cell}>
+              <button
+                className={css.cellBtn}
+                onClick={() => handleSortClick('client')}
+              >
+                {getSortIcon('client')}
+              </button>
+              <span>Cliente</span>
+            </div>
+          </th>
           <th colSpan={3}>N de vidros</th>
 
           <th rowSpan={2}>Lote butyl</th>
@@ -20,13 +73,13 @@ function ReportTable({ ordersList, user }) {
           <th rowSpan={2}>Data</th>
         </tr>
         <tr>
-          <th>total</th>
-          <th>feitos</th>
-          <th>
+          <th className={css.subtitel}>total</th>
+          <th className={css.subtitel}>feitos</th>
+          <th className={css.subtitel}>
             m<sup>2</sup>
           </th>
-          <th>branco</th>
-          <th>preto</th>
+          <th className={css.subtitel}>branco</th>
+          <th className={css.subtitel}>preto</th>
         </tr>
       </thead>
       <tbody>

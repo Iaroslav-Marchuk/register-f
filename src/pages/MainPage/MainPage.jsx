@@ -14,9 +14,12 @@ import { selectUser } from '../../redux/auth/selectors.js';
 import { useSearchParams } from 'react-router-dom';
 import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
 import {
+  selectRation,
   selectTodayOrders,
   selectTodayOrdersIsLoading,
   selectTodayOrdersTotalPages,
+  selectTotalCompleted,
+  seletcTotalM2,
 } from '../../redux/orders/selectors.js';
 import Pagination from '../../components/Pagination/Pagination.jsx';
 import toast from 'react-hot-toast';
@@ -31,6 +34,10 @@ function MainPage() {
   const todayOrders = useSelector(selectTodayOrders);
   const totalPages = useSelector(selectTodayOrdersTotalPages);
   const isOrdersLoading = useSelector(selectTodayOrdersIsLoading);
+
+  const totalCompleted = useSelector(selectTotalCompleted);
+  const totalM2 = useSelector(seletcTotalM2);
+  const ratio = useSelector(selectRation);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
@@ -136,7 +143,7 @@ function MainPage() {
               sortOrder={sortOrder}
               onSortChange={handleSortChange}
             />
-            <Summary />
+            <Summary completed={totalCompleted} m2={totalM2} ratio={ratio} />
 
             {hasMoreThan2Pages && (
               <Pagination

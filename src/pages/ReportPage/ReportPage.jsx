@@ -84,7 +84,6 @@ function ReportPage() {
               sortOrder={sortOrder}
               onSortChange={handleSortChange}
             />
-            <Summary />
 
             {hasMoreThan2Pages && (
               <Pagination

@@ -41,6 +41,18 @@ export const getTodayOrders = createAsyncThunk(
   }
 );
 
+export const existOrder = createAsyncThunk(
+  'orders/existOrder',
+  async (values, thunkAPI) => {
+    try {
+      const response = await axiosAPI.post('/orders/existOrder', values);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const createOrder = createAsyncThunk(
   'orders/createOrder',
   async (values, thunkAPI) => {
@@ -53,8 +65,32 @@ export const createOrder = createAsyncThunk(
   }
 );
 
+export const createRecoveryOrder = createAsyncThunk(
+  'orders/createRecoveryOrder',
+  async (values, thunkAPI) => {
+    try {
+      const response = await axiosAPI.post('/orders/recovery', values);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const updateOrder = createAsyncThunk(
   'orders/updateOrder',
+  async (values, thunkAPI) => {
+    try {
+      const response = await axiosAPI.post('/orders/update', values);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const editOrder = createAsyncThunk(
+  'orders/editOrder',
   async ({ orderId, values }, thunkAPI) => {
     try {
       const response = await axiosAPI.patch(`/orders/${orderId}`, values);

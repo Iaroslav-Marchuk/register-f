@@ -58,3 +58,7 @@ tbody td {
 .cellBtn:active {
   transform: scale(0.98);
 }
+
+.subtitel {
+  font-size: 12px;
+}

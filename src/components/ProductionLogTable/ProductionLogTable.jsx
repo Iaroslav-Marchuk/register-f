@@ -61,7 +61,7 @@ function ProductionLogTable({ ordersList, sortBy, sortOrder, onSortChange }) {
                 <span>Cliente</span>
               </div>
             </th>
-            <th colSpan={3}>N de vidros</th>
+            <th colSpan={4}>N de vidros</th>
 
             <th rowSpan={2}>Lote butyl</th>
             <th rowSpan={2}>Lote sílica</th>
@@ -71,13 +71,17 @@ function ProductionLogTable({ ordersList, sortBy, sortOrder, onSortChange }) {
             <th rowSpan={2}>Ações</th>
           </tr>
           <tr>
-            <th>total</th>
-            <th>feitos</th>
-            <th>
-              m<sup>2</sup>
+            <th className={css.subtitel}>total, unid.</th>
+            <th className={css.subtitel}>
+              total, m<sup>2</sup>
             </th>
-            <th>branco</th>
-            <th>preto</th>
+
+            <th className={css.subtitel}>feitos, unid.</th>
+            <th className={css.subtitel}>
+              feito, m<sup>2</sup>
+            </th>
+            <th className={css.subtitel}>branco</th>
+            <th className={css.subtitel}>preto</th>
           </tr>
         </thead>
         <tbody>

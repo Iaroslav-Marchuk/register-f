@@ -61,7 +61,7 @@ function ReportTable({ ordersList, user, sortBy, sortOrder, onSortChange }) {
               <span>Cliente</span>
             </div>
           </th>
-          <th colSpan={3}>N de vidros</th>
+          <th colSpan={4}>N de vidros</th>
 
           <th rowSpan={2}>Lote butyl</th>
           <th rowSpan={2}>Lote sílica</th>
@@ -73,10 +73,13 @@ function ReportTable({ ordersList, user, sortBy, sortOrder, onSortChange }) {
           <th rowSpan={2}>Data</th>
         </tr>
         <tr>
-          <th className={css.subtitel}>total</th>
-          <th className={css.subtitel}>feitos</th>
+          <th className={css.subtitel}>total, unid.</th>
           <th className={css.subtitel}>
-            m<sup>2</sup>
+            total, m<sup>2</sup>
+          </th>
+          <th className={css.subtitel}>feitos, unid.</th>
+          <th className={css.subtitel}>
+            feito, m<sup>2</sup>
           </th>
           <th className={css.subtitel}>branco</th>
           <th className={css.subtitel}>preto</th>

@@ -12,7 +12,8 @@ import css from './MainPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
 import { useSearchParams } from 'react-router-dom';
-import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
+// import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
+import { getTodayOrders } from '../../redux/orders/operations.js';
 import {
   selectRation,
   selectTodayOrders,
@@ -22,7 +23,7 @@ import {
   seletcTotalM2,
 } from '../../redux/orders/selectors.js';
 import Pagination from '../../components/Pagination/Pagination.jsx';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -74,40 +75,39 @@ function MainPage() {
 
   const hasMoreThan2Pages = totalPages > 1;
 
-  const handleCreateOrder = async (values, actions) => {
-    const payload = {
-      ep: Number(values.ep),
-      client: values.client,
-      order: {
-        total: Number(values.order.total),
-        completed: Number(values.order.completed),
-        m2: Number(values.order.m2),
-      },
-      butylLot: String(values.butylLot),
-      silicaLot: String(values.silicaLot),
-      polysulfideLot: {
-        white: String(values.polysulfideLot.white),
-        black: String(values.polysulfideLot.black),
-      },
-      notes: String(values.notes),
-    };
+  // const handleCreateOrder = async (values, actions) => {
+  //   const payload = {
+  //     ep: Number(values.ep),
+  //     client: String(values.client),
+  //     totalItems: Number(values.totalItems),
+  //     totalM2: Number(values.totalM2),
+  //     completedItems: Number(values.completedItems),
+  //     completedM2: Number(values.completedM2),
+  //     butylLot: String(values.butylLot),
+  //     silicaLot: String(values.silicaLot),
+  //     polysulfideLot: {
+  //       white: String(values.polysulfideLot.white),
+  //       black: String(values.polysulfideLot.black),
+  //     },
+  //     notes: String(values.notes),
+  //   };
 
-    try {
-      await dispatch(createOrder(payload)).unwrap();
-      toast.success('Pedido adicionado com sucesso!');
-      dispatch(
-        getTodayOrders({
-          page: 1,
-          perPage: 10,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
-        })
-      );
-      actions.resetForm();
-    } catch (error) {
-      toast.error('Falha ao adicionar novo pedido: ' + error);
-    }
-  };
+  //   try {
+  //     await dispatch(createOrder(payload)).unwrap();
+  //     toast.success('Pedido adicionado com sucesso!');
+  //     dispatch(
+  //       getTodayOrders({
+  //         page: 1,
+  //         perPage: 10,
+  //         sortBy: 'createdAt',
+  //         sortOrder: 'desc',
+  //       })
+  //     );
+  //     actions.resetForm();
+  //   } catch (error) {
+  //     toast.error('Falha ao adicionar novo pedido: ' + error);
+  //   }
+  // };
 
   useEffect(() => {
     dispatch(getTodayOrders({ page, perPage, sortBy, sortOrder }));
@@ -161,7 +161,20 @@ function MainPage() {
       </Container>
 
       <ModalOverlay isOpen={isModalOpen} onClose={closeModal}>
-        <ProductionLogForm isEdit={false} onSubmit={handleCreateOrder} />
+        {/* <ProductionLogForm isEdit={false} onSubmit={handleCreateOrder} /> */}
+        <ProductionLogForm
+          isEdit={false}
+          onSubmit={() => {
+            dispatch(
+              getTodayOrders({
+                page: 1,
+                perPage: 10,
+                sortBy: 'createdAt',
+                sortOrder: 'desc',
+              })
+            );
+          }}
+        />
       </ModalOverlay>
     </section>
   );

@@ -5,7 +5,7 @@ import css from './ProductionLogTableRow.module.css';
 
 import { Trash2, SquarePen } from 'lucide-react';
 import { useState } from 'react';
-import { deleteOrder, updateOrder } from '../../redux/orders/operations.js';
+import { deleteOrder, editOrder } from '../../redux/orders/operations.js';
 import toast from 'react-hot-toast';
 import ProductionLogForm from '../ProductionLogForm/ProductionLogForm.jsx';
 
@@ -14,11 +14,17 @@ function ProductionLogTableRow({ order }) {
   const {
     ep,
     client,
-    order: { total, completed, missed = null, m2 } = {},
+    totalItems,
+    totalM2,
+    completedItems,
+    completedM2,
+    missedItems,
     butylLot,
     silicaLot,
     polysulfideLot: { white, black } = {},
     notes,
+    type,
+    isFinal,
   } = order;
 
   const [editIsOpen, setEditisOpen] = useState(false);
@@ -34,16 +40,17 @@ function ProductionLogTableRow({ order }) {
 
   const handleEdit = async values => {
     if (
-      order.ep === values.ep &&
-      order.client === values.client &&
-      order.order.total === Number(values.order.total) &&
-      order.order.completed === Number(values.order.completed) &&
-      order.order.m2 === Number(values.order.m2) &&
-      order.butylLot === values.butylLot &&
-      order.silicaLot === values.silicaLot &&
-      order.polysulfideLot.white === values.polysulfideLot.white &&
-      order.polysulfideLot.black === values.polysulfideLot.black &&
-      order.notes === values.notes
+      ep === values.ep &&
+      client === values.client &&
+      totalItems === Number(values.totalItems) &&
+      totalM2 === Number(values.totalM2) &&
+      completedItems === Number(values.completedItems) &&
+      completedM2 === Number(values.completedM2) &&
+      butylLot === values.butylLot &&
+      silicaLot === values.silicaLot &&
+      white === values.polysulfideLot.white &&
+      black === values.polysulfideLot.black &&
+      notes === values.notes
     ) {
       toast.error('A encomenda não foi alterada.');
       return;
@@ -52,11 +59,11 @@ function ProductionLogTableRow({ order }) {
     const payload = {
       ep: Number(values.ep),
       client: values.client,
-      order: {
-        total: Number(values.order.total),
-        completed: Number(values.order.completed),
-        m2: Number(values.order.m2),
-      },
+      totalItems: Number(values.totalItems),
+      totalM2: Number(values.totalM2),
+      completedItems: Number(values.completedItems),
+      completedM2: Number(values.completedM2),
+
       butylLot: String(values.butylLot),
       silicaLot: String(values.silicaLot),
       polysulfideLot: {
@@ -68,7 +75,7 @@ function ProductionLogTableRow({ order }) {
 
     try {
       await dispatch(
-        updateOrder({ orderId: order._id, values: payload })
+        editOrder({ orderId: order._id, values: payload })
       ).unwrap();
       toast.success('Encomenda atualizada com sucesso!');
       closeEdit();
@@ -101,15 +108,18 @@ function ProductionLogTableRow({ order }) {
       <tr>
         <td>{String(ep).padStart(5, '0')}</td>
         <td className={css.textLeft}>{client}</td>
-        <td>{total}</td>
-        <td>{completed}</td>
-        <td>{m2.toFixed(2)}</td>
+        <td>{type === 'created' && totalItems}</td>
+        <td>{type === 'created' && totalM2.toFixed(2)}</td>
+        <td>{completedItems}</td>
+        <td>{completedM2.toFixed(2)}</td>
         <td>{butylLot}</td>
         <td>{silicaLot}</td>
         <td>{white}</td>
         <td>{black}</td>
         <td className={css.textLeft}>
-          {notes} {missed ? `Faltam ${missed}` : ''}
+          {notes} {missedItems > 0 ? `Faltam ${missedItems}` : ''}
+          {isFinal && 'Completo'}
+          {type === 'recovered' && 'Reposição'}
         </td>
         <td>
           <div className={css.btns}>

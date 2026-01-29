@@ -5,7 +5,11 @@ function ReportTableRow({ order, user }) {
     local,
     ep,
     client,
-    order: { total, completed, missed = null, m2 } = {},
+    totalItems,
+    totalM2,
+    completedItems,
+    completedM2,
+    missedItems,
     butylLot,
     silicaLot,
     polysulfideLot: { white, black } = {},
@@ -24,15 +28,16 @@ function ReportTableRow({ order, user }) {
       <tr>
         <td>{String(ep).padStart(5, '0')}</td>
         <td className={css.textLeft}>{client}</td>
-        <td>{total}</td>
-        <td>{completed}</td>
-        <td>{m2.toFixed(2)}</td>
+        <td>{totalItems}</td>
+        <td>{totalM2.toFixed(2)}</td>
+        <td>{completedItems}</td>
+        <td>{completedM2.toFixed(2)}</td>
         <td>{butylLot}</td>
         <td>{silicaLot}</td>
         <td>{white}</td>
         <td>{black}</td>
         <td className={css.textLeft}>
-          {notes} {missed ? `Faltam ${missed}` : ''}
+          {notes} {missedItems > 0 ? `Faltam ${missedItems}` : ''}
         </td>
         <td>{user.name}</td>
         <td>{local}</td>

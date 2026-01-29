@@ -43,6 +43,13 @@
   border: 2px solid var(--secondary-foreground);
 }
 
+.input:disabled {
+  background-color: var(--muted-foreground);
+  border-color: var(--primary-foreground);
+  cursor: not-allowed;
+  color: var(--muted);
+}
+
 .error {
   color: var(--error);
   font-size: 12px;

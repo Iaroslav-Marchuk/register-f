@@ -101,3 +101,31 @@
   height: 24px;
   transform: scale(0.5);
 }
+
+.checkList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* дві колонки */
+  gap: 0px 24px; /* вертикальний та горизонтальний відступ */
+  padding: 0;
+  list-style: none;
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkItemText {
+  font-size: 14px;
+}
+
+.checkName {
+  font-weight: 600;
+}

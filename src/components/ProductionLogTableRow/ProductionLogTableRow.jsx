@@ -22,7 +22,7 @@ function ProductionLogTableRow({ order }) {
     butylLot,
     silicaLot,
     polysulfideLot: { white, black } = {},
-    notes,
+    checkedNotes,
     type,
     isFinal,
   } = order;
@@ -38,6 +38,9 @@ function ProductionLogTableRow({ order }) {
 
   const closeEdit = () => setEditisOpen(false);
 
+  const isSameArray = (a = [], b = []) =>
+    a.length === b.length && a.every(v => b.includes(v));
+
   const handleEdit = async values => {
     if (
       ep === values.ep &&
@@ -50,7 +53,8 @@ function ProductionLogTableRow({ order }) {
       silicaLot === values.silicaLot &&
       white === values.polysulfideLot.white &&
       black === values.polysulfideLot.black &&
-      notes === values.notes
+      // checkedNotes === values.checkedNotes
+      isSameArray(checkedNotes, values.checkedNotes)
     ) {
       toast.error('A encomenda não foi alterada.');
       return;
@@ -70,7 +74,7 @@ function ProductionLogTableRow({ order }) {
         white: String(values.polysulfideLot.white),
         black: String(values.polysulfideLot.black),
       },
-      notes: String(values.notes),
+      checkedNotes: values.checkedNotes,
     };
 
     try {
@@ -95,8 +99,8 @@ function ProductionLogTableRow({ order }) {
         toast.success('Encomenda eliminada com sucesso!');
       })
 
-      .catch(() => {
-        toast.error('Falha ao eliminar a encomenda.');
+      .catch(error => {
+        toast.error('Falha ao eliminar a encomenda.' + error);
       })
       .finally(() => {
         closeConfirm();
@@ -117,9 +121,10 @@ function ProductionLogTableRow({ order }) {
         <td>{white}</td>
         <td>{black}</td>
         <td className={css.textLeft}>
-          {notes} {missedItems > 0 ? `Faltam ${missedItems}` : ''}
-          {isFinal && 'Completo'}
-          {type === 'recovered' && 'Reposição'}
+          {checkedNotes.length > 0 ? checkedNotes.join(', ') : ''}
+          {missedItems > 0 ? ` Faltam ${missedItems}` : ''}
+          {isFinal && type !== 'recovered' && ' Completo'}
+          {type === 'recovered' && ' Reposição'}
         </td>
         <td>
           <div className={css.btns}>

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import {
   createOrder,
   createRecoveryOrder,
+  // editOrder,
   existOrder,
   updateOrder,
 } from '../../redux/orders/operations.js';
@@ -15,6 +16,41 @@ import { useDispatch } from 'react-redux';
 
 function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
   const dispatch = useDispatch();
+
+  const NOTE_CHECKBOXES = {
+    Tamanho: [
+      { id: 'more2000', text: 'Montra (>2000mm)' },
+      { id: 'more3500', text: 'Comprido (>3500mm)' },
+      { id: 'amostra', text: 'Amostra' },
+    ],
+
+    Formato: [
+      { id: 'molde', text: 'Molde' },
+      { id: 'sutado', text: 'Sutado' },
+      { id: 'redondo', text: 'Redondo' },
+      { id: 'triplo', text: 'Triplo' },
+      { id: 'furo', text: 'c/furo' },
+    ],
+
+    Acabamento: [
+      { id: 'decalado', text: 'Decalado' },
+      { id: 'rebaixo', text: 'c/rebaixo' },
+    ],
+
+    Perfil: [
+      { id: 'wePreto', text: 'w/e preto' },
+      { id: 'weCinza', text: 'w/e cinza' },
+      { id: 'cxPreta', text: 'cx preta' },
+      { id: 'superSpacer', text: 'Super Spacer' },
+    ],
+
+    Extras: [
+      { id: 'quadrícula', text: 'Quadrícula' },
+      { id: 'Árgon', text: 'Árgon' },
+      { id: 'siliconeEstrutural', text: 'c/silicone estrutural' },
+      { id: 'comutavel', text: 'Comutável' },
+    ],
+  };
 
   const initialValues = order
     ? {
@@ -30,7 +66,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
           white: order.polysulfideLot.white,
           black: order.polysulfideLot.black,
         },
-        notes: order.notes,
+        checkedNotes: order.checkedNotes,
       }
     : {
         ep: '',
@@ -45,7 +81,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
           white: '',
           black: '',
         },
-        notes: '',
+        checkedNotes: [],
       };
 
   const validationSchema = Yup.object().shape({
@@ -148,9 +184,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
       white: Yup.string(),
       black: Yup.string(),
     }),
-    notes: Yup.string()
-      .min(3, 'Mínimo 3 caracteres')
-      .max(40, 'Máximo de 40 caracteres'),
+    checkedNotes: Yup.array(),
   });
 
   const [orderMode, setOrderMode] = useState('new');
@@ -177,7 +211,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
             butylLot: '',
             silicaLot: '',
             polysulfideLot: { white: '', black: '' },
-            notes: '',
+            checkedNotes: [],
           });
           return;
         }
@@ -200,7 +234,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
           butylLot: data.order.butylLot,
           silicaLot: data.order.silicaLot,
           polysulfideLot: data.order.polysulfideLot,
-          notes: data.order.notes,
+          checkedNotes: data.order.checkedNotes,
         });
         return;
       }
@@ -222,7 +256,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
           butylLot: '',
           silicaLot: '',
           polysulfideLot: { white: '', black: '' },
-          notes: '',
+          checkedNotes: [],
         });
       } else {
         setOrderMode('new');
@@ -236,6 +270,14 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
 
   const handleSubmit = async (values, actions) => {
     try {
+      if (isEdit) {
+        // await dispatch(editOrder({ orderId: order._id, values })).unwrap();
+        // toast.success('Encomenda atualizada com sucesso!');
+        // if (onSubmit) onSubmit();
+        if (onSubmit) onSubmit(values);
+        return;
+      }
+
       if (orderMode === 'new') {
         await dispatch(createOrder(values)).unwrap();
         toast.success('Nova ordem criada com sucesso!');
@@ -257,6 +299,26 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
     }
   };
 
+  const isFieldDisabled = fieldName => {
+    if (!isEdit && orderMode === 'new') return false;
+
+    if (isEdit) {
+      if (
+        order.type !== 'created' &&
+        ['ep', 'client', 'totalItems', 'totalM2'].includes(fieldName)
+      )
+        return true;
+      return false;
+    }
+
+    if (['continue', 'recovery'].includes(orderMode)) {
+      if (['ep', 'client', 'totalItems', 'totalM2'].includes(fieldName))
+        return true;
+    }
+
+    return false;
+  };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -264,9 +326,8 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
       validationSchema={validationSchema}
       enableReinitialize={true}
       validateOnBlur={true}
-      validateOnChange={false}
+      validateOnChange={isEdit}
     >
-      {/* {({ isSubmitting }) => ( */}
       {formik => (
         <Form className={css.form}>
           <div className={css.field}>
@@ -279,6 +340,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
               className={css.input}
               type="number"
               onBlur={e => handleOnBlur(e.target.value, formik)}
+              disabled={isFieldDisabled('ep')}
             />
             <ErrorMessage className={css.error} name="ep" component="span" />
           </div>
@@ -290,7 +352,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
               id="client"
               name="client"
               className={css.input}
-              disabled={orderMode === 'continue' || orderMode === 'recovery'}
+              disabled={isFieldDisabled('client')}
             />
             <ErrorMessage
               className={css.error}
@@ -310,7 +372,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
                 name="totalItems"
                 className={css.input}
                 type="number"
-                disabled={orderMode === 'continue' || orderMode === 'recovery'}
+                disabled={isFieldDisabled('totalItems')}
               />
               <ErrorMessage
                 className={css.error}
@@ -328,7 +390,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
                 name="totalM2"
                 className={css.input}
                 type="number"
-                disabled={orderMode === 'continue' || orderMode === 'recovery'}
+                disabled={isFieldDisabled('totalM2')}
               />
               <ErrorMessage
                 className={css.error}
@@ -428,16 +490,30 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
               />
             </div>
           </fieldset>
-          <div className={css.field}>
-            <label htmlFor="notes" className={css.label}>
-              Observações
-            </label>
-            <Field id="notes" name="notes" className={css.input} />
-            <ErrorMessage className={css.error} name="notes" component="span" />
-          </div>
 
-          {/* <button type="submit" className={css.btn} disabled={isSubmitting}>
-            {isSubmitting ? ( */}
+          <fieldset className={css.fieldset}>
+            <legend className={css.legend}>Observações</legend>
+            {Object.entries(NOTE_CHECKBOXES).map(([group, items]) => (
+              <div key={group} className={css.groupWrapper}>
+                <p className={css.checkName}>{group}</p>
+                <ul key={group} className={css.checkList}>
+                  {items.map(opt => (
+                    <li key={opt.id} className={css.checkItem}>
+                      <label className={css.checkboxLabel}>
+                        <Field
+                          type="checkbox"
+                          name="checkedNotes"
+                          value={opt.text}
+                        />
+                        <span className={css.checkItemText}>{opt.text}</span>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </fieldset>
+
           <button
             type="submit"
             className={css.btn}

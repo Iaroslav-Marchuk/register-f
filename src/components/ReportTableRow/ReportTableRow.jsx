@@ -13,7 +13,9 @@ function ReportTableRow({ order, user }) {
     butylLot,
     silicaLot,
     polysulfideLot: { white, black } = {},
-    notes,
+    checkedNotes,
+    type,
+    isFinal,
     createdAt,
   } = order;
 
@@ -28,8 +30,8 @@ function ReportTableRow({ order, user }) {
       <tr>
         <td>{String(ep).padStart(5, '0')}</td>
         <td className={css.textLeft}>{client}</td>
-        <td>{totalItems}</td>
-        <td>{totalM2.toFixed(2)}</td>
+        <td>{type === 'created' && totalItems}</td>
+        <td>{type === 'created' && totalM2.toFixed(2)}</td>
         <td>{completedItems}</td>
         <td>{completedM2.toFixed(2)}</td>
         <td>{butylLot}</td>
@@ -37,7 +39,10 @@ function ReportTableRow({ order, user }) {
         <td>{white}</td>
         <td>{black}</td>
         <td className={css.textLeft}>
-          {notes} {missedItems > 0 ? `Faltam ${missedItems}` : ''}
+          {checkedNotes.length > 0 ? checkedNotes.join(', ') : ''}
+          {missedItems > 0 ? ` Faltam ${missedItems}` : ''}
+          {isFinal && type !== 'recovered' && ' Completo'}
+          {type === 'recovered' && ' Reposição'}
         </td>
         <td>{user.name}</td>
         <td>{local}</td>

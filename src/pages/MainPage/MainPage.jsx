@@ -75,40 +75,6 @@ function MainPage() {
 
   const hasMoreThan2Pages = totalPages > 1;
 
-  // const handleCreateOrder = async (values, actions) => {
-  //   const payload = {
-  //     ep: Number(values.ep),
-  //     client: String(values.client),
-  //     totalItems: Number(values.totalItems),
-  //     totalM2: Number(values.totalM2),
-  //     completedItems: Number(values.completedItems),
-  //     completedM2: Number(values.completedM2),
-  //     butylLot: String(values.butylLot),
-  //     silicaLot: String(values.silicaLot),
-  //     polysulfideLot: {
-  //       white: String(values.polysulfideLot.white),
-  //       black: String(values.polysulfideLot.black),
-  //     },
-  //     notes: String(values.notes),
-  //   };
-
-  //   try {
-  //     await dispatch(createOrder(payload)).unwrap();
-  //     toast.success('Pedido adicionado com sucesso!');
-  //     dispatch(
-  //       getTodayOrders({
-  //         page: 1,
-  //         perPage: 10,
-  //         sortBy: 'createdAt',
-  //         sortOrder: 'desc',
-  //       })
-  //     );
-  //     actions.resetForm();
-  //   } catch (error) {
-  //     toast.error('Falha ao adicionar novo pedido: ' + error);
-  //   }
-  // };
-
   useEffect(() => {
     dispatch(getTodayOrders({ page, perPage, sortBy, sortOrder }));
   }, [page, perPage, sortBy, sortOrder, dispatch]);

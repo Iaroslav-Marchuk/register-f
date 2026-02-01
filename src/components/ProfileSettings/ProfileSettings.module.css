@@ -1,0 +1,36 @@
+.title {
+  margin-bottom: 40px;
+}
+
+.btnsList {
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.btn {
+  user-select: none;
+  padding: 8px 24px;
+  background-color: var(--secondary);
+  border: solid 2px var(--secondary-foreground);
+  border-radius: 20px;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  background-color: var(--secondary-hover);
+  transform: scale(1.03);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.active {
+  background-color: var(--secondary-hover);
+}

@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  changeLocal,
+  changePassword,
   getCurrentUser,
   logIn,
   logOut,
@@ -81,7 +83,23 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.authError = null;
       })
-      .addCase(getCurrentUser.rejected, handleRejected);
+      .addCase(getCurrentUser.rejected, handleRejected)
+
+      .addCase(changeLocal.pending, handlePending)
+      .addCase(changeLocal.fulfilled, (state, action) => {
+        state.isUserLoading = false;
+        state.user = action.payload;
+        state.authError = null;
+      })
+      .addCase(changeLocal.rejected, handleRejected)
+
+      .addCase(changePassword.pending, handlePending)
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.isUserLoading = false;
+        state.user = action.payload;
+        state.authError = null;
+      })
+      .addCase(changePassword.rejected, handleRejected);
   },
 });
 

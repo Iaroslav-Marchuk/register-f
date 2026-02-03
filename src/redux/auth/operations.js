@@ -59,3 +59,31 @@ export const getCurrentUser = createAsyncThunk(
     }
   }
 );
+
+export const changeLocal = createAsyncThunk(
+  'auth/changeLocal',
+  async (values, thunkAPI) => {
+    try {
+      const response = await axiosAPI.patch('/auth/changeLocal', values);
+      const { user } = response.data;
+
+      return user;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async (values, thunkAPI) => {
+    try {
+      const response = await axiosAPI.patch('/auth/changePassword', values);
+      const { user } = response.data;
+
+      return user;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);

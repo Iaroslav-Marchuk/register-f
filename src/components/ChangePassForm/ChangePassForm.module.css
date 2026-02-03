@@ -1,16 +1,5 @@
-.title {
-  margin-bottom: 8px;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.subtitle {
-  margin-bottom: 24px;
-  font-weight: 500;
-  font-size: 20px;
-}
-
 .form {
+  margin: 24px 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -25,10 +14,6 @@
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: 500;
-}
-
-.inputContainer {
-  position: relative;
 }
 
 .input {
@@ -55,14 +40,6 @@ select:disabled {
   color: var(--muted-foreground);
 }
 
-.inputIcon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  pointer-events: none;
-  stroke: var(--secondary-foreground);
-}
-
 .input:disabled + .inputIcon {
   stroke: var(--muted-foreground);
 }
@@ -84,7 +61,6 @@ select:disabled {
   border-radius: 8px;
   transition: all 0.2s ease-in-out;
   margin-top: 8px;
-  margin-bottom: 24px;
 }
 
 .btn:hover {

@@ -1,17 +1,23 @@
 .title {
-  margin-bottom: 40px;
+  margin: 60px 0;
 }
 
-.btnsList {
+.container {
   margin-left: 30px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 48px;
+}
+
+.themeWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .btn {
+  width: 240px;
   padding: 8px 24px;
-
   background-color: #26a69a;
   border: solid 2px #004d40;
   color: var(--primary);
@@ -40,12 +46,18 @@
   background-color: var(--secondary-hover);
 }
 
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .input {
+  width: 240px;
   padding: 8px 40px 8px 12px;
   border: solid 1px var(--secondary-foreground);
   border-radius: 8px;
   outline: none;
-  margin-right: 20px;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;

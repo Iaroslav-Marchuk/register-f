@@ -112,3 +112,15 @@ export const deleteOrder = createAsyncThunk(
     }
   }
 );
+
+export const getUserDailyActivity = createAsyncThunk(
+  `orders/getUserDailyActivity`,
+  async (year, thunkAPI) => {
+    try {
+      const response = await axiosAPI.get(`/orders/activity/${year}`);
+      return response.data.activity;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);

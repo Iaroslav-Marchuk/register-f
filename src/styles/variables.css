@@ -19,11 +19,10 @@
 [data-theme='dark'] {
   --primary: #26acf4;
   --primary-foreground: #d8effc;
-  --secondary: #232838;
-  --secondary-foreground: #d8dfe4;
 
-  --background: #0e111b;
+  --secondary: #585f76;
+  --secondary-foreground: #90969b;
+
+  --background: #2d3d70;
   --foreground: #d8dfe4;
-  --table: #171a24;
-  --table-foreground: #d8dfe4;
 }

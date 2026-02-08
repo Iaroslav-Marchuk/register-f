@@ -1,5 +1,5 @@
 .title {
-  margin-bottom: 40px;
+  margin: 60px 0;
 }
 
 .list {
@@ -7,7 +7,7 @@
   list-style: disc;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 36px;
 }
 
 .text {

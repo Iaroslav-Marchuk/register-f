@@ -6,6 +6,7 @@ import {
   editOrder,
   getAllOrders,
   getTodayOrders,
+  getUserDailyActivity,
   updateOrder,
 } from './operations.js';
 
@@ -53,6 +54,11 @@ const ordersSlice = createSlice({
         totalM2: 0,
         ratio: 0,
       },
+      isLoading: false,
+      error: null,
+    },
+    activity: {
+      dailyActivity: [],
       isLoading: false,
       error: null,
     },
@@ -148,7 +154,14 @@ const ordersSlice = createSlice({
         );
         state.today.stats = calculateStats(state.today.orders);
       })
-      .addCase(deleteOrder.rejected, handleRejected('delete'));
+      .addCase(deleteOrder.rejected, handleRejected('delete'))
+
+      .addCase(getUserDailyActivity.pending, handlePending('activity'))
+      .addCase(getUserDailyActivity.fulfilled, (state, action) => {
+        state.activity.isLoading = false;
+        state.activity.dailyActivity = action.payload;
+      })
+      .addCase(getUserDailyActivity.rejected, handleRejected('activity'));
   },
 });
 

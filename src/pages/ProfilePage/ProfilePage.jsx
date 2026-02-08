@@ -43,7 +43,7 @@ function ProfilePage() {
               }
             >
               <UserRound className={css.icon} size={20} strokeWidth={1.5} />
-              Perfil do utilizador
+              Utilizador
             </NavLink>
             <NavLink
               to="activity"

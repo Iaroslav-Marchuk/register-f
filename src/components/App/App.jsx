@@ -24,6 +24,7 @@ import { refresh } from '../../redux/auth/operations.js';
 import GlobalLoader from '../GlobalLoader/GlobalLoader.jsx';
 import LoginPage from '../../pages/LoginPage/LoginPage.jsx';
 import RegistrationPage from '../../pages/RegistrationPage/RegistrationPage.jsx';
+import ThemeProvider from '../ThemeProvider/ThemeProvider.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function App() {
   return isRefreshing ? (
     <GlobalLoader />
   ) : (
-    <>
+    <ThemeProvider>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Navigate to="/auth" />} />
@@ -89,7 +90,7 @@ function App() {
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </>
+    </ThemeProvider>
   );
 }
 

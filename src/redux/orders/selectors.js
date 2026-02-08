@@ -27,6 +27,10 @@ export const selectTodayOrdersHasPreviousPage = state =>
 export const selectTodayOrdersIsLoading = state => state.orders.today.isLoading;
 export const selectTodayOrdersError = state => state.orders.today.error;
 
+export const selectActivity = state => state.orders.activity.dailyActivity;
+export const selectActivityIsloading = state => state.orders.activity.isLoading;
+export const selectActivityError = state => state.orders.activity.error;
+
 export const selectCreateIsLoading = state => state.orders.create.isLoading;
 export const selectCreateError = state => state.orders.create.error;
 

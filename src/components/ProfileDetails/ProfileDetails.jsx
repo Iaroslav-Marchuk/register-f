@@ -16,6 +16,11 @@ function ProfileDetails() {
         </li>
         <li className={css.item}>
           <p className={css.text}>
+            E-mail do utilizador: <span className={css.span}>{user.email}</span>
+          </p>
+        </li>
+        <li className={css.item}>
+          <p className={css.text}>
             Actual local do trabalho:{' '}
             <span className={css.span}>{user.local}</span>
           </p>

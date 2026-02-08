@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
 import { changeLocal } from '../../redux/auth/operations.js';
 import ChangePassForm from '../ChangePassForm/ChangePassForm.jsx';
+import ThemeTogle from '../ThemeTogle/ThemeTogle.jsx';
 
 function ProfileSettings() {
   const dispatch = useDispatch();
@@ -33,9 +34,10 @@ function ProfileSettings() {
     <div className={css.wrapper}>
       <h2 className={css.title}>Profile Settings</h2>
       <div className={css.container}>
-        <button type="submit" className={css.btn}>
-          Dark mode
-        </button>
+        <div className={css.themeWrapper}>
+          <span className={css.span}>Mudar Tema</span>
+          <ThemeTogle />
+        </div>
 
         <div className={css.inputContainer}>
           <select

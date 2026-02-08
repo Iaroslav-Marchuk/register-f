@@ -29,6 +29,7 @@
     "react-router-dom": "^7.11.0",
     "react-spinners": "^0.17.0",
     "use-debounce": "^10.1.0",
+    "use-local-storage": "^3.0.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {

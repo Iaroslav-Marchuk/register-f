@@ -12,7 +12,6 @@ import css from './MainPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/auth/selectors.js';
 import { useSearchParams } from 'react-router-dom';
-// import { createOrder, getTodayOrders } from '../../redux/orders/operations.js';
 import { getTodayOrders } from '../../redux/orders/operations.js';
 import {
   selectRation,
@@ -23,7 +22,6 @@ import {
   seletcTotalM2,
 } from '../../redux/orders/selectors.js';
 import Pagination from '../../components/Pagination/Pagination.jsx';
-// import toast from 'react-hot-toast';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -127,7 +125,6 @@ function MainPage() {
       </Container>
 
       <ModalOverlay isOpen={isModalOpen} onClose={closeModal}>
-        {/* <ProductionLogForm isEdit={false} onSubmit={handleCreateOrder} /> */}
         <ProductionLogForm
           isEdit={false}
           onSubmit={() => {

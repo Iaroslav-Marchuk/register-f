@@ -8,7 +8,6 @@ import { useState } from 'react';
 import {
   createOrder,
   createRecoveryOrder,
-  // editOrder,
   existOrder,
   updateOrder,
 } from '../../redux/orders/operations.js';
@@ -271,9 +270,6 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
   const handleSubmit = async (values, actions) => {
     try {
       if (isEdit) {
-        // await dispatch(editOrder({ orderId: order._id, values })).unwrap();
-        // toast.success('Encomenda atualizada com sucesso!');
-        // if (onSubmit) onSubmit();
         if (onSubmit) onSubmit(values);
         return;
       }

@@ -1,0 +1,119 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableTitle {
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.btsList {
+  display: flex;
+  gap: 20px;
+}
+
+.topBtn {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 8px 4px;
+  cursor: pointer;
+}
+
+.topBtn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background-color: var(--secondary-foreground);
+  border-radius: 1px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.activeTop::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.dashboardWrapper {
+  display: flex;
+  border: solid 1px var(--secondary-foreground);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+}
+
+.sideBtn {
+  width: 100%;
+  user-select: none;
+  padding: 32px 16px;
+  background-color: var(--secondary);
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+}
+
+.sideBtn:hover {
+  background-color: var(--secondary-hover);
+  transform: scale(1.03);
+}
+
+.sideBtn:active {
+  transform: scale(0.98);
+}
+
+.activeSide {
+  background-color: var(--secondary-hover);
+}
+
+.diagram {
+  width: 100%;
+  /* background-color: burlywood; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navBtn {
+  width: 40px;
+}
+
+.yearSelect {
+  position: relative;
+  display: inline-block;
+  width: 160px;
+}
+
+.select {
+  width: 100%;
+  padding: 8px 24px;
+  background-color: #26a69a;
+  border: solid 2px #004d40;
+  color: var(--primary);
+  border-radius: 8px;
+  outline: none;
+  text-align: center;
+}

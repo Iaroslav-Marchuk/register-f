@@ -1,6 +1,6 @@
 import css from './ReportTableRow.module.css';
 
-function ReportTableRow({ order, user }) {
+function ReportTableRow({ order }) {
   const {
     local,
     ep,
@@ -44,7 +44,7 @@ function ReportTableRow({ order, user }) {
           {isFinal && type !== 'recovered' && ' Completo'}
           {type === 'recovered' && ' Reposição'}
         </td>
-        <td>{user.name}</td>
+        <td>{order.owner.name}</td>
         <td>{local}</td>
         <td>{date}</td>
       </tr>

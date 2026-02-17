@@ -89,7 +89,7 @@ function MainPage() {
 
           <div className={css.info}>
             <span className={css.span}>{user.local}</span>
-            <span className={css.span}>Responsavel: {user.name}</span>
+            <span className={css.span}>Responsável: {user.name}</span>
             <span className={css.span}>{`Data: ${date}`}</span>
           </div>
         </div>

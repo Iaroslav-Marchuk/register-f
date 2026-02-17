@@ -53,7 +53,6 @@ function ProductionLogTableRow({ order }) {
       silicaLot === values.silicaLot &&
       white === values.polysulfideLot.white &&
       black === values.polysulfideLot.black &&
-      // checkedNotes === values.checkedNotes
       isSameArray(checkedNotes, values.checkedNotes)
     ) {
       toast.error('A encomenda não foi alterada.');

@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
+import { formatNumber } from '../../helpers/formatters.js';
 
 function SimpleBarChart({ data, medium }) {
   return (
@@ -17,15 +18,15 @@ function SimpleBarChart({ data, medium }) {
         data={data}
         barCategoryGap="30%"
         margin={{
-          top: 10,
+          top: 20,
           right: 10,
-          left: 40,
+          left: 10,
           bottom: 10,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" tick={{ fontSize: 14 }} interval={0} />
-        <YAxis width="auto" />
+        <YAxis width="auto" tickFormatter={value => formatNumber(value)} />
         <Tooltip
           content={({ payload }) => {
             if (!payload || !payload.length) return null;
@@ -37,7 +38,7 @@ function SimpleBarChart({ data, medium }) {
                   border: '1px solid #ccc',
                 }}
               >
-                <span>{`${payload[0].value} m²`}</span>
+                <span>{`${formatNumber(payload[0].value)} m²`}</span>
               </div>
             );
           }}
@@ -48,13 +49,45 @@ function SimpleBarChart({ data, medium }) {
           y={medium}
           stroke="var(--primary-foreground)"
           strokeDasharray="6 6"
-          label={{
-            value: `Média: ${medium}`,
-            position: 'left',
-            fill: 'var(--primary-foreground)',
-            fontSize: 12,
+          label={({ viewBox }) => {
+            const { x, y } = viewBox;
+            const paddingX = 6;
+            const paddingY = 2;
+            const fontSize = 12;
+            const text = `Média: ${formatNumber(medium)} m²`;
+            const textWidth = text.length * 6; // приблизна ширина
+
+            // додаткове підняття над лінією
+            const offsetY = 4; // пікселів над ReferenceLine
+
+            return (
+              <g>
+                {/* фон */}
+                <rect
+                  x={x + 5}
+                  y={y - fontSize - paddingY - offsetY}
+                  width={textWidth + paddingX * 2}
+                  height={fontSize + paddingY * 2}
+                  rx={4}
+                  fill="var(--background)"
+                />
+
+                {/* текст */}
+                <text
+                  x={x + 5 + paddingX}
+                  y={y - paddingY - offsetY}
+                  fill="var(--primary-foreground)"
+                  fontSize={fontSize}
+                  textAnchor="start"
+                  dominantBaseline="auto"
+                >
+                  {text}
+                </text>
+              </g>
+            );
           }}
         />
+
         <Bar
           dataKey="value"
           name="m²"

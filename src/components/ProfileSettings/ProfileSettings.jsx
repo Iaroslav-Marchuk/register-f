@@ -68,28 +68,6 @@ function ProfileSettings() {
         <button type="button" className={css.btn} onClick={openModal}>
           Alterar a palavra passe
         </button>
-
-        {/* <div className={css.inputContainer}>
-          <input value={location} onChange={handleChange} className={css.input}>
-            <option value="" disabled>
-              Local atual: {currentLocal}
-            </option>
-            {options.map(opt => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </input>
-
-          <button
-            type="button"
-            className={css.btn}
-            onClick={handleSave}
-            disabled={!location || location === user.local}
-          >
-            Alterar o meta da produção
-          </button>
-        </div> */}
       </div>
 
       <ModalOverlay isOpen={isModalOpen} onClose={closeModal}>

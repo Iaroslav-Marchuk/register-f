@@ -5,6 +5,7 @@ import {
   deleteOrder,
   editOrder,
   getAllOrders,
+  getFullStatisticForYear,
   getTodayOrders,
   getUserDailyActivity,
   updateOrder,
@@ -59,6 +60,11 @@ const ordersSlice = createSlice({
     },
     activity: {
       dailyActivity: [],
+      isLoading: false,
+      error: null,
+    },
+    statistics: {
+      byYear: {},
       isLoading: false,
       error: null,
     },
@@ -161,7 +167,15 @@ const ordersSlice = createSlice({
         state.activity.isLoading = false;
         state.activity.dailyActivity = action.payload;
       })
-      .addCase(getUserDailyActivity.rejected, handleRejected('activity'));
+      .addCase(getUserDailyActivity.rejected, handleRejected('activity'))
+
+      .addCase(getFullStatisticForYear.pending, handlePending('statistics'))
+      .addCase(getFullStatisticForYear.fulfilled, (state, action) => {
+        state.statistics.isLoading = false;
+        const year = action.meta.arg;
+        state.statistics.byYear[year] = action.payload;
+      })
+      .addCase(getFullStatisticForYear.rejected, handleRejected('statistics'));
   },
 });
 

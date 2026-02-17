@@ -1,46 +1,81 @@
-import { useMemo, useState } from 'react';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import css from './StatsDashboard.module.css';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
+import StackedBarChart from '../StackedBarChart/StackedBarChart.jsx';
 import SimpleBarChart from '../SimpleBarChart/SimpleBarChart.jsx';
+
+import { getFullStatisticForYear } from '../../redux/orders/operations.js';
+
+import {
+  selectStatisticsByYear,
+  selectStatisticsIsLoading,
+} from '../../redux/orders/selectors.js';
+
+import {
+  buildDaysChartData,
+  buildWeeksAggregatedData,
+  calculateAverage,
+} from '../../helpers/builders.js';
 
 import {
   getWeekRange,
-  getWeeksInMonth,
-  getWeeksInYear,
+  getWeeksInMonthRange,
+  getWeeksInYearRange,
 } from '../../helpers/dateRanges.js';
-import {
-  buildMonthChartData,
-  buildWeekChartData,
-} from '../../helpers/chartData.js';
-import StackedBarChart from '../StackedBarChart/StackedBarChart.jsx';
+
+import css from './StatsDashboard.module.css';
 
 function StatsDashboard() {
-  const DAYGOAL = 1000;
-  const WEEKGOAL = 5000;
-
-  const DAYMEDIUM = 960;
-  const WEEKMEDIUM = 4600;
-
-  const GOAL = 380;
-  const MEDIUM = 330;
   const WEEKS_PER_PAGE = 18;
+  const DAY_GOAL = 1000;
+  const WEEK_GOAL = 5000;
+  const CURRENT_YEAR = new Date().getFullYear();
 
-  const today = useMemo(() => new Date(), []);
-  const CURRENT_YEAR = today.getFullYear();
-  const YEARS = Array.from({ length: 3 }, (_, i) => CURRENT_YEAR - i).reverse();
+  const YEARS_LIST = Array.from(
+    { length: 3 },
+    (_, i) => CURRENT_YEAR - i
+  ).reverse();
 
-  const [period, setPeriod] = useState('week'); // week | month | year
-  const [line, setLine] = useState('total'); // total | l1 | l2 | l3
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlYear = Number(searchParams.get('year')) || CURRENT_YEAR;
+
+  const [selectedYear, setSelectedYear] = useState(urlYear ?? CURRENT_YEAR);
+
+  const [period, setPeriod] = useState('week');
+  const [line, setLine] = useState('total');
 
   const [weekOffset, setWeekOffset] = useState(0);
+  const [monthOffset, setMonthOffset] = useState(0);
   const [yearPage, setYearPage] = useState(0);
 
-  const [year, setYear] = useState(CURRENT_YEAR);
+  const dispatch = useDispatch();
+  const today = useMemo(() => new Date(), []);
+  const statisticsByYear = useSelector(state =>
+    selectStatisticsByYear(state, selectedYear)
+  );
 
-  const onYearChange = newYear => {
-    setYear(newYear);
+  const WEEKS_IN_YEAR = useMemo(
+    () => getWeeksInYearRange(selectedYear).length,
+    [selectedYear]
+  );
+
+  const statisticsIsLoading = useSelector(selectStatisticsIsLoading);
+
+  useEffect(() => {
+    dispatch(getFullStatisticForYear(selectedYear));
+  }, [selectedYear, dispatch]);
+
+  const handleYearChange = newYear => {
+    const params = new URLSearchParams(searchParams);
+    params.set('year', newYear);
+    setSearchParams(params);
+    setSelectedYear(newYear);
 
     if (newYear === CURRENT_YEAR) {
       setPeriod('week');
@@ -54,143 +89,167 @@ function StatsDashboard() {
     }
   };
 
-  const [monthOffset, setMonthOffset] = useState(0);
-
-  const baseMonthDate = useMemo(() => {
-    let base;
-
-    if (year === CURRENT_YEAR) {
-      base = new Date(today);
-    } else {
-      base = new Date(year, 11, 1); // 🔥 грудень вибраного року
-    }
-
-    base.setMonth(base.getMonth() - monthOffset);
+  // Базова дата для тижня
+  const baseDate = useMemo(() => {
+    let base =
+      selectedYear === CURRENT_YEAR
+        ? new Date(today)
+        : new Date(selectedYear, 0, 1);
+    base.setDate(base.getDate() + weekOffset * 7);
     return base;
-  }, [today, monthOffset, year, CURRENT_YEAR]);
+  }, [today, weekOffset, selectedYear, CURRENT_YEAR]);
+
+  const days = getWeekRange(baseDate);
+
+  // базова дата для місяця
+  const baseMonthDate = useMemo(() => {
+    let base =
+      selectedYear === CURRENT_YEAR
+        ? new Date(today)
+        : new Date(selectedYear, 0, 1);
+    base.setMonth(base.getMonth() + monthOffset);
+    return base;
+  }, [today, monthOffset, selectedYear, CURRENT_YEAR]);
 
   const monthWeeks = useMemo(() => {
-    return getWeeksInMonth(
+    return getWeeksInMonthRange(
       baseMonthDate.getFullYear(),
       baseMonthDate.getMonth()
     );
   }, [baseMonthDate]);
 
-  const monthValues = {
-    '2026-02-01': 50,
-    '2026-02-02': 40,
-    '2026-02-10': 120,
-    '2026-02-11': 80,
-  };
-
-  const monthData = useMemo(() => {
-    return buildMonthChartData(monthWeeks, monthValues);
-  }, [monthWeeks]);
-
-  const baseDate = useMemo(() => {
-    let base;
-
-    if (year === CURRENT_YEAR) {
-      base = new Date(today);
-    } else {
-      base = new Date(year, 11, 31); // 🔥 старт з кінця року
-    }
-
-    base.setDate(base.getDate() - weekOffset * 7);
-    return base;
-  }, [today, weekOffset, year, CURRENT_YEAR]);
-
-  const days = getWeekRange(baseDate);
-
-  const weekValues = {
-    '2026-02-10': 120, // тут вставити дані з бекенду!!
-    '2026-02-11': 80,
-  };
-
-  const weekData = buildWeekChartData(days, weekValues);
-
-  const allWeeks = useMemo(() => getWeeksInYear(year), [year]);
-
-  // const allWeeks = getWeeksInYear(CURRENT_YEAR);
+  const allWeeks = useMemo(
+    () => getWeeksInYearRange(selectedYear),
+    [selectedYear]
+  );
   const start = yearPage * WEEKS_PER_PAGE;
   const end = start + WEEKS_PER_PAGE;
-
   const visibleWeeks = allWeeks.slice(start, end);
 
-  const yearData = useMemo(() => {
-    return visibleWeeks.map((week, i) => {
-      const l1 = Math.floor(Math.random() * 200);
-      const l2 = Math.floor(Math.random() * 200);
-      const l3 = Math.floor(Math.random() * 200);
+  // === NAVIGATION LOGIC ===
+  const { minWeekDate, maxWeekDate } = useMemo(() => {
+    const minWeekDate = new Date(selectedYear, 0, 1); // 1 січня вибраного року
+    const maxWeekDate =
+      selectedYear === CURRENT_YEAR
+        ? today // для поточного року максимум сьогодні
+        : new Date(selectedYear, 11, 31); // для минулих років максимум 31 грудня
 
-      return {
-        name: `${start + i + 1}`,
-        value: l1 + l2 + l3, // для SimpleBarChart
-        l1,
-        l2,
-        l3,
-      };
-    });
-  }, [visibleWeeks, start]);
+    const minMonthDate = new Date(selectedYear, 0, 1); // перший місяць року
+    const maxMonthDate =
+      selectedYear === CURRENT_YEAR
+        ? new Date(today.getFullYear(), today.getMonth(), 1) // поточний місяць
+        : new Date(selectedYear, 11, 1); // грудень для минулих років
 
-  const isWeekPrevDisabled = useMemo(() => {
-    const firstAllowed = new Date(year, 0, 1);
-    const currentStart = new Date(days[0]);
-    return currentStart <= firstAllowed;
-  }, [days, year]);
+    return { minWeekDate, maxWeekDate, minMonthDate, maxMonthDate };
+  }, [selectedYear, CURRENT_YEAR, today]);
 
-  const isWeekNextDisabled = useMemo(() => {
-    if (year === CURRENT_YEAR) {
-      return weekOffset === 0; // далі ніж сьогодні йти не можна
-    }
-    // для минулих років дозволяємо рухатися вперед поки не дійдемо до кінця року
-    const lastAllowed = new Date(year, 11, 31);
-    const currentEnd = new Date(days[6]);
-    return currentEnd >= lastAllowed;
-  }, [weekOffset, days, year, CURRENT_YEAR]);
+  // === Week navigation ===
+  const isWeekPrevDisabled = useMemo(
+    () => days[0] <= minWeekDate,
+    [days, minWeekDate]
+  );
+  const isWeekNextDisabled = useMemo(
+    () => days[6] >= maxWeekDate,
+    [days, maxWeekDate]
+  );
 
+  // === Month navigation ===
   const isMonthPrevDisabled = useMemo(() => {
-    const firstAllowed = new Date(year, 0, 1); // січень вибраного року
-    const currentMonth = new Date(
-      baseMonthDate.getFullYear(),
-      baseMonthDate.getMonth(),
-      1
-    );
-    return currentMonth <= firstAllowed;
-  }, [baseMonthDate, year]);
+    // Якщо ми в поточному році, не можна гортати в минуле за січень
+    if (selectedYear === CURRENT_YEAR) {
+      return baseMonthDate.getMonth() === 0;
+    }
+    // Для минулих років: не можна гортати лівіше грудня минулого року (перший місяць року)
+    return baseMonthDate.getMonth() === 0;
+  }, [baseMonthDate, selectedYear, CURRENT_YEAR]);
 
   const isMonthNextDisabled = useMemo(() => {
-    const currentMonth = new Date(
-      baseMonthDate.getFullYear(),
-      baseMonthDate.getMonth(),
-      1
-    );
+    // Якщо поточний рік — не можна йти далі поточного місяця
+    if (selectedYear === CURRENT_YEAR) {
+      return baseMonthDate.getMonth() >= today.getMonth();
+    }
+    // Для минулих років — грудень останній
+    return baseMonthDate.getMonth() === 11;
+  }, [baseMonthDate, selectedYear, CURRENT_YEAR, today]);
 
-    if (year === CURRENT_YEAR) {
-      const currentRealMonth = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        1
-      );
-      return currentMonth >= currentRealMonth;
+  // === Year navigation ===
+  const isYearPrevDisabled = yearPage === 0;
+  const isYearNextDisabled = (yearPage + 1) * WEEKS_PER_PAGE >= allWeeks.length;
+
+  // === Handlers for buttons ===
+  const handlePrev = () => {
+    if (period === 'week') setWeekOffset(p => p - 1);
+    if (period === 'month') setMonthOffset(p => p - 1);
+    if (period === 'year') setYearPage(p => Math.max(0, p - 1));
+  };
+
+  const handleNext = () => {
+    if (period === 'week') setWeekOffset(p => p + 1);
+    if (period === 'month') setMonthOffset(p => p + 1);
+    if (period === 'year') setYearPage(p => p + 1);
+  };
+
+  const periodData = useMemo(() => {
+    if (!Array.isArray(statisticsByYear)) return [];
+
+    switch (period) {
+      case 'week':
+        return buildDaysChartData(days, statisticsByYear);
+
+      case 'month':
+        return buildWeeksAggregatedData(monthWeeks, statisticsByYear, 'month');
+
+      case 'year':
+        return buildWeeksAggregatedData(
+          visibleWeeks,
+          statisticsByYear,
+          'year',
+          start // додатковий параметр offset для глобальної нумерації
+        );
+
+      default:
+        return [];
+    }
+  }, [statisticsByYear, period, days, monthWeeks, visibleWeeks, start]);
+
+  const average = useMemo(() => {
+    if (period === 'year') {
+      const totalSum = statisticsByYear.reduce((acc, item) => {
+        if (line === 'total') {
+          return acc + (item.l1 || 0) + (item.l2 || 0) + (item.l3 || 0);
+        }
+        return acc + (item[line] || 0);
+      }, 0);
+
+      return totalSum / WEEKS_IN_YEAR;
     }
 
-    const lastAllowed = new Date(year, 11, 1); // грудень вибраного року
-    return currentMonth >= lastAllowed;
-  }, [baseMonthDate, year, CURRENT_YEAR, today]);
+    return calculateAverage(periodData, line);
+  }, [statisticsByYear, period, line, periodData, WEEKS_IN_YEAR]);
 
-  const goal =
-    period === 'week' ? WEEKGOAL : period === 'month' ? GOAL : WEEKGOAL * 4;
+  const goal = period === 'week' ? DAY_GOAL : WEEK_GOAL;
 
-  const medium =
-    period === 'week'
-      ? WEEKMEDIUM
-      : period === 'month'
-        ? MEDIUM
-        : WEEKMEDIUM * 4;
+  let chart;
 
-  const DATA =
-    period === 'week' ? weekData : period === 'month' ? monthData : yearData;
+  if (statisticsIsLoading) {
+    chart = (
+      <Stack spacing={1}>
+        <Skeleton variant="rectangular" height={330} width={1032} />
+      </Stack>
+    );
+  } else if (line === 'total') {
+    chart = <StackedBarChart goal={goal} medium={average} data={periodData} />;
+  } else {
+    chart = (
+      <SimpleBarChart
+        data={periodData.map(item => ({
+          name: item.name,
+          value: item[line] ?? 0,
+        }))}
+        medium={average}
+      />
+    );
+  }
 
   return (
     <div className={css.wrapper}>
@@ -200,7 +259,9 @@ function StatsDashboard() {
           <button
             type="button"
             onClick={() => setPeriod('week')}
-            className={clsx(css.topBtn, { [css.activeTop]: period === 'week' })}
+            className={clsx(css.topBtn, {
+              [css.activeTop]: period === 'week',
+            })}
           >
             por semana
           </button>
@@ -216,17 +277,19 @@ function StatsDashboard() {
           <button
             type="button"
             onClick={() => setPeriod('year')}
-            className={clsx(css.topBtn, { [css.activeTop]: period === 'year' })}
+            className={clsx(css.topBtn, {
+              [css.activeTop]: period === 'year',
+            })}
           >
             por ano
           </button>
           <div className={css.yearSelect}>
             <select
-              value={year}
-              onChange={e => onYearChange(Number(e.target.value))}
+              value={selectedYear}
+              onChange={e => handleYearChange(Number(e.target.value))}
               className={css.select}
             >
-              {YEARS.map(y => (
+              {YEARS_LIST.map(y => (
                 <option key={y} value={y}>
                   {y}
                 </option>
@@ -296,43 +359,23 @@ function StatsDashboard() {
             {!(
               (period === 'week' && isWeekPrevDisabled) ||
               (period === 'month' && isMonthPrevDisabled) ||
-              (period === 'year' && yearPage === 0)
+              (period === 'year' && isYearPrevDisabled)
             ) && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (period === 'week') setWeekOffset(p => p + 1);
-                  if (period === 'month') setMonthOffset(p => p + 1);
-                  if (period === 'year') setYearPage(p => Math.max(0, p - 1));
-                }}
-              >
+              <button type="button" onClick={handlePrev}>
                 <ChevronLeft />
               </button>
             )}
           </div>
 
-          {line === 'total' ? (
-            <StackedBarChart goal={goal} medium={medium} data={DATA} />
-          ) : (
-            <SimpleBarChart data={DATA} medium={medium} />
-          )}
+          {chart}
 
           <div className={css.navBtn}>
             {!(
               (period === 'week' && isWeekNextDisabled) ||
               (period === 'month' && isMonthNextDisabled) ||
-              (period === 'year' &&
-                (yearPage + 1) * WEEKS_PER_PAGE >= allWeeks.length)
+              (period === 'year' && isYearNextDisabled)
             ) && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (period === 'week') setWeekOffset(p => Math.max(0, p - 1));
-                  if (period === 'month')
-                    setMonthOffset(p => Math.max(0, p - 1));
-                  if (period === 'year') setYearPage(p => p + 1);
-                }}
-              >
+              <button type="button" onClick={handleNext}>
                 <ChevronRight />
               </button>
             )}

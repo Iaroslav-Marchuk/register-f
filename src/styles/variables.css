@@ -17,11 +17,11 @@
 }
 
 [data-theme='dark'] {
-  --primary: #26acf4;
+  --primary: #aad9f2;
   --primary-foreground: #d8effc;
 
-  --secondary: #585f76;
-  --secondary-foreground: #90969b;
+  --secondary: #6f758b;
+  --secondary-foreground: #d7e1ea;
 
   --background: #2d3d70;
   --foreground: #d8dfe4;

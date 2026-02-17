@@ -8,9 +8,10 @@ import css from './ProfilePage.module.css';
 import { useState } from 'react';
 import { logOut } from '../../redux/auth/operations.js';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ModalOverlay from '../../components/ModalOverlay/ModalOverlay.jsx';
 import ConfirmContainer from '../../components/ConfirmContainer/ConfirmContainer.jsx';
+import { selectUser } from '../../redux/auth/selectors.js';
 
 function ProfilePage() {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ function ProfilePage() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const openConfirm = () => setIsConfirmOpen(true);
   const closeConfirm = () => setIsConfirmOpen(false);
+
+  const user = useSelector(selectUser);
 
   const handleLogout = async () => {
     try {
@@ -35,7 +38,7 @@ function ProfilePage() {
         <h1 className={css.title}>Perfil do utilizador</h1>
         <div className={css.wrapper}>
           <aside className={css.sideBar}>
-            <div className={css.avatar}>I</div>
+            <div className={css.avatar}>{user.name[0]}</div>
             <NavLink
               to="details"
               className={({ isActive }) =>

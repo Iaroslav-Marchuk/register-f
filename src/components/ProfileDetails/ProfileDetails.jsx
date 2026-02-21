@@ -10,28 +10,22 @@ function ProfileDetails() {
       <h2 className={css.title}>Dados do perfil</h2>
       <ol className={css.list}>
         <li className={css.item}>
-          <p className={css.text}>
-            Nome do utilizador: <span className={css.span}>{user.name}</span>
-          </p>
+          <p className={css.text}>Nome do utilizador:</p>
+          <span className={css.span}>{user.name}</span>
         </li>
         <li className={css.item}>
-          <p className={css.text}>
-            E-mail do utilizador: <span className={css.span}>{user.email}</span>
-          </p>
+          <p className={css.text}>E-mail do utilizador:</p>
+          <span className={css.span}>{user.email}</span>
         </li>
         <li className={css.item}>
-          <p className={css.text}>
-            Actual local do trabalho:{' '}
-            <span className={css.span}>{user.local}</span>
-          </p>
+          <p className={css.text}>Actual local do trabalho: </p>
+          <span className={css.span}>{user.local}</span>
         </li>
         <li className={css.item}>
-          <p className={css.text}>
-            Registado no sistema:{' '}
-            <span className={css.span}>
-              {new Date(user.createdAt).toLocaleDateString('pt-PT')}
-            </span>
-          </p>
+          <p className={css.text}>Registado no sistema: </p>
+          <span className={css.span}>
+            {new Date(user.createdAt).toLocaleDateString('pt-PT')}
+          </span>
         </li>
       </ol>
     </div>

@@ -1,7 +1,6 @@
-// Отримати всі дні тижня для заданої дати (починаючи з понеділка)
 export function getWeekRange(date = new Date()) {
   const d = new Date(date);
-  const day = d.getDay() || 7; // якщо неділя, робимо 7
+  const day = d.getDay() || 7;
   const monday = new Date(d);
   monday.setDate(d.getDate() - day + 1);
 
@@ -12,7 +11,6 @@ export function getWeekRange(date = new Date()) {
   });
 }
 
-// Отримати всі тижні місяця
 export function getWeeksInMonthRange(year, month) {
   const result = [];
   const firstDay = new Date(year, month, 1);
@@ -20,7 +18,7 @@ export function getWeeksInMonthRange(year, month) {
 
   let current = new Date(firstDay);
   const day = current.getDay() || 7;
-  current.setDate(current.getDate() - (day - 1)); // зсув на понеділок
+  current.setDate(current.getDate() - (day - 1));
 
   while (current <= lastDay) {
     const weekStart = new Date(current);
@@ -34,27 +32,48 @@ export function getWeeksInMonthRange(year, month) {
   return result;
 }
 
-// Отримати всі тижні року
+// export function getWeeksInYearRange(year) {
+//   const weeks = [];
+
+//   let date = new Date(year, 0, 1);
+
+//   while (date.getFullYear() === year) {
+//     const weekStart = new Date(date);
+
+//     const weekEnd = new Date(date);
+//     const day = weekEnd.getDay() || 7;
+//     weekEnd.setDate(weekEnd.getDate() + (7 - day));
+//     if (weekEnd.getFullYear() > year) weekEnd.setFullYear(year, 11, 31);
+
+//     weeks.push({ start: weekStart, end: weekEnd });
+
+//     date = new Date(weekEnd);
+//     date.setDate(date.getDate() + 1);
+//   }
+
+//   return weeks;
+// }
+
 export function getWeeksInYearRange(year) {
   const weeks = [];
 
-  // перший день року
-  let date = new Date(year, 0, 1);
+  const firstDay = new Date(year, 0, 1);
+  const lastDay = new Date(year, 11, 31);
 
-  while (date.getFullYear() === year) {
-    const weekStart = new Date(date);
+  let current = new Date(firstDay);
 
-    // закінчення тижня = неділя або кінець року
-    const weekEnd = new Date(date);
-    const day = weekEnd.getDay() || 7; // неділя = 7
-    weekEnd.setDate(weekEnd.getDate() + (7 - day));
-    if (weekEnd.getFullYear() > year) weekEnd.setFullYear(year, 11, 31);
+  // Зсунути до понеділка
+  const day = current.getDay() || 7;
+  current.setDate(current.getDate() - (day - 1));
+
+  while (current <= lastDay) {
+    const weekStart = new Date(current);
+    const weekEnd = new Date(current);
+    weekEnd.setDate(weekEnd.getDate() + 6);
 
     weeks.push({ start: weekStart, end: weekEnd });
 
-    // наступний тиждень = день після кінця поточного
-    date = new Date(weekEnd);
-    date.setDate(date.getDate() + 1);
+    current.setDate(current.getDate() + 7);
   }
 
   return weeks;

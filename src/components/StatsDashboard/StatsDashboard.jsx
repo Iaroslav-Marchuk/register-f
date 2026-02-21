@@ -67,9 +67,15 @@ function StatsDashboard() {
 
   const statisticsIsLoading = useSelector(selectStatisticsIsLoading);
 
+  // useEffect(() => {
+  //   dispatch(getFullStatisticForYear(selectedYear));
+  // }, [selectedYear, dispatch]);
+
   useEffect(() => {
-    dispatch(getFullStatisticForYear(selectedYear));
-  }, [selectedYear, dispatch]);
+    if (!statisticsByYear) {
+      dispatch(getFullStatisticForYear(selectedYear));
+    }
+  }, [selectedYear, statisticsByYear, dispatch]);
 
   const handleYearChange = newYear => {
     const params = new URLSearchParams(searchParams);
@@ -89,7 +95,6 @@ function StatsDashboard() {
     }
   };
 
-  // Базова дата для тижня
   const baseDate = useMemo(() => {
     let base =
       selectedYear === CURRENT_YEAR
@@ -101,7 +106,6 @@ function StatsDashboard() {
 
   const days = getWeekRange(baseDate);
 
-  // базова дата для місяця
   const baseMonthDate = useMemo(() => {
     let base =
       selectedYear === CURRENT_YEAR
@@ -122,28 +126,25 @@ function StatsDashboard() {
     () => getWeeksInYearRange(selectedYear),
     [selectedYear]
   );
+
   const start = yearPage * WEEKS_PER_PAGE;
   const end = start + WEEKS_PER_PAGE;
   const visibleWeeks = allWeeks.slice(start, end);
 
-  // === NAVIGATION LOGIC ===
   const { minWeekDate, maxWeekDate } = useMemo(() => {
-    const minWeekDate = new Date(selectedYear, 0, 1); // 1 січня вибраного року
+    const minWeekDate = new Date(selectedYear, 0, 1);
     const maxWeekDate =
-      selectedYear === CURRENT_YEAR
-        ? today // для поточного року максимум сьогодні
-        : new Date(selectedYear, 11, 31); // для минулих років максимум 31 грудня
+      selectedYear === CURRENT_YEAR ? today : new Date(selectedYear, 11, 31);
 
-    const minMonthDate = new Date(selectedYear, 0, 1); // перший місяць року
+    const minMonthDate = new Date(selectedYear, 0, 1);
     const maxMonthDate =
       selectedYear === CURRENT_YEAR
-        ? new Date(today.getFullYear(), today.getMonth(), 1) // поточний місяць
-        : new Date(selectedYear, 11, 1); // грудень для минулих років
+        ? new Date(today.getFullYear(), today.getMonth(), 1)
+        : new Date(selectedYear, 11, 1);
 
     return { minWeekDate, maxWeekDate, minMonthDate, maxMonthDate };
   }, [selectedYear, CURRENT_YEAR, today]);
 
-  // === Week navigation ===
   const isWeekPrevDisabled = useMemo(
     () => days[0] <= minWeekDate,
     [days, minWeekDate]
@@ -153,30 +154,36 @@ function StatsDashboard() {
     [days, maxWeekDate]
   );
 
-  // === Month navigation ===
   const isMonthPrevDisabled = useMemo(() => {
-    // Якщо ми в поточному році, не можна гортати в минуле за січень
     if (selectedYear === CURRENT_YEAR) {
       return baseMonthDate.getMonth() === 0;
     }
-    // Для минулих років: не можна гортати лівіше грудня минулого року (перший місяць року)
+
     return baseMonthDate.getMonth() === 0;
   }, [baseMonthDate, selectedYear, CURRENT_YEAR]);
 
   const isMonthNextDisabled = useMemo(() => {
-    // Якщо поточний рік — не можна йти далі поточного місяця
     if (selectedYear === CURRENT_YEAR) {
       return baseMonthDate.getMonth() >= today.getMonth();
     }
-    // Для минулих років — грудень останній
+
     return baseMonthDate.getMonth() === 11;
   }, [baseMonthDate, selectedYear, CURRENT_YEAR, today]);
 
-  // === Year navigation ===
   const isYearPrevDisabled = yearPage === 0;
-  const isYearNextDisabled = (yearPage + 1) * WEEKS_PER_PAGE >= allWeeks.length;
+  // const isYearNextDisabled = (yearPage + 1) * WEEKS_PER_PAGE >= allWeeks.length;
+  const isYearNextDisabled = useMemo(() => {
+    const nextStart = (yearPage + 1) * WEEKS_PER_PAGE;
 
-  // === Handlers for buttons ===
+    if (nextStart >= allWeeks.length) return true;
+
+    if (selectedYear !== CURRENT_YEAR) return false;
+
+    const nextPageWeeks = allWeeks.slice(nextStart, nextStart + WEEKS_PER_PAGE);
+
+    return !nextPageWeeks.some(w => w.start <= today);
+  }, [yearPage, allWeeks, selectedYear, CURRENT_YEAR, today]);
+
   const handlePrev = () => {
     if (period === 'week') setWeekOffset(p => p - 1);
     if (period === 'month') setMonthOffset(p => p - 1);
@@ -204,7 +211,7 @@ function StatsDashboard() {
           visibleWeeks,
           statisticsByYear,
           'year',
-          start // додатковий параметр offset для глобальної нумерації
+          start
         );
 
       default:
@@ -212,20 +219,51 @@ function StatsDashboard() {
     }
   }, [statisticsByYear, period, days, monthWeeks, visibleWeeks, start]);
 
-  const average = useMemo(() => {
-    if (period === 'year') {
-      const totalSum = statisticsByYear.reduce((acc, item) => {
-        if (line === 'total') {
-          return acc + (item.l1 || 0) + (item.l2 || 0) + (item.l3 || 0);
-        }
-        return acc + (item[line] || 0);
-      }, 0);
+  // const average = useMemo(() => {
+  //   if (period === 'year') {
+  //     const totalSum = statisticsByYear.reduce((acc, item) => {
+  //       if (line === 'total') {
+  //         return acc + (item.l1 || 0) + (item.l2 || 0) + (item.l3 || 0);
+  //       }
+  //       return acc + (item[line] || 0);
+  //     }, 0);
 
-      return totalSum / WEEKS_IN_YEAR;
+  //     return totalSum / WEEKS_IN_YEAR;
+  //   }
+
+  //   return calculateAverage(periodData, line);
+  // }, [statisticsByYear, period, line, periodData, WEEKS_IN_YEAR]);
+
+  const average = useMemo(() => {
+    if (!Array.isArray(statisticsByYear)) return 0;
+
+    if (period === 'year') {
+      const today = new Date();
+
+      const effectiveWeeks =
+        selectedYear === CURRENT_YEAR
+          ? allWeeks.filter(w => w.start <= today)
+          : allWeeks;
+
+      const fullYearData = buildWeeksAggregatedData(
+        effectiveWeeks,
+        statisticsByYear,
+        'year'
+      );
+
+      return calculateAverage(fullYearData, line);
     }
 
     return calculateAverage(periodData, line);
-  }, [statisticsByYear, period, line, periodData, WEEKS_IN_YEAR]);
+  }, [
+    period,
+    statisticsByYear,
+    selectedYear,
+    CURRENT_YEAR,
+    allWeeks,
+    periodData,
+    line,
+  ]);
 
   const goal = period === 'week' ? DAY_GOAL : WEEK_GOAL;
 

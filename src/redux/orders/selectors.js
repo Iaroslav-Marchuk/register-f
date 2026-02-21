@@ -31,9 +31,10 @@ export const selectActivity = state => state.orders.activity.dailyActivity;
 export const selectActivityIsloading = state => state.orders.activity.isLoading;
 export const selectActivityError = state => state.orders.activity.error;
 
-// export const selectStatisticsByYear = state => state.orders.statistics.byYear;
+// export const selectStatisticsByYear = (state, year) =>
+//   state.orders.statistics.byYear[year] ?? [];
 export const selectStatisticsByYear = (state, year) =>
-  state.orders.statistics.byYear[year] ?? [];
+  state.orders.statistics.byYear[year];
 export const selectStatisticsIsLoading = state =>
   state.orders.statistics.isLoading;
 export const selectStatisticsError = state => state.orders.statistics.error;

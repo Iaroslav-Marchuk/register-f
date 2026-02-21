@@ -39,7 +39,6 @@ function RegistrationForm() {
   };
 
   return (
-    // <div className={css.wrapper}>
     <>
       <h2 className={css.title}>Criar conta</h2>
       <h3 className={css.subtitle}>para começar agora!</h3>
@@ -138,7 +137,6 @@ function RegistrationForm() {
         agora!
       </p>
     </>
-    // </div>
   );
 }
 

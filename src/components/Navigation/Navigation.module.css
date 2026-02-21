@@ -1,61 +1,67 @@
 .navigation {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+  display: none;
 }
 
-.link {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 0;
-  border: solid 2px var(--secondary-foreground);
-  background-color: var(--secondary);
-  border-radius: 100%;
-  transition: all 0.2s ease-in-out;
-  position: relative;
-}
+@media only screen and (min-width: 768px) {
+  .navigation {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
 
-.link::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: -36px;
-  left: 50%;
-  transform: translateX(-50%);
+  .link {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0;
+    border: solid 2px var(--secondary-foreground);
+    background-color: var(--secondary);
+    border-radius: 100%;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+  }
 
-  background: var(--secondary);
-  color: var(--secondary-foreground);
-  padding: 6px 10px;
-  border-radius: 6px;
+  .link::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
 
-  font-size: 12px;
-  white-space: nowrap;
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    padding: 6px 10px;
+    border-radius: 6px;
 
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
+    font-size: 12px;
+    white-space: nowrap;
 
-.link:hover::after,
-.link:focus-visible::after {
-  opacity: 1;
-}
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
 
-.icon {
-  stroke: var(--secondary-foreground);
-}
+  .link:hover::after,
+  .link:focus-visible::after {
+    opacity: 1;
+  }
 
-.link:hover {
-  transform: scale(1.05);
-  background: var(--secondary-hover);
-}
+  .icon {
+    stroke: var(--secondary-foreground);
+  }
 
-.link:active {
-  transform: scale(0.98);
-}
+  .link:hover {
+    transform: scale(1.05);
+    background: var(--secondary-hover);
+  }
 
-.active {
-  background-color: var(--secondary-hover);
+  .link:active {
+    transform: scale(0.98);
+  }
+
+  .active {
+    background-color: var(--secondary-hover);
+  }
 }

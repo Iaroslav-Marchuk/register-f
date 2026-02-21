@@ -1,6 +1,5 @@
 import { formatDayLabel } from './formatters';
 
-// Дані по днях
 export function buildDaysChartData(days, statistics = []) {
   const map = Object.fromEntries(statistics.map(item => [item.date, item]));
 
@@ -23,7 +22,6 @@ function formatRange(start, end) {
   return `${pad(start.getDate())}/${pad(start.getMonth() + 1)} – ${pad(end.getDate())}/${pad(end.getMonth() + 1)}`;
 }
 
-// Дані по тижнях для місячного графіку
 export function buildMonthChartData(weeks, valuesByDate = {}) {
   return weeks.map(week => {
     let l1 = 0;
@@ -78,10 +76,8 @@ export function buildWeeksAggregatedData(
       d.setDate(d.getDate() + 1);
     }
 
-    // Вибір підпису залежно від labelMode
     let name;
     if (labelMode === 'year') {
-      // додаємо indexOffset для правильної глобальної нумерації
       name = (week.label ?? index) + 1 + indexOffset;
     } else {
       name = formatRange(week.start, week.end);
@@ -100,7 +96,7 @@ export function calculateAverage(data, line = 'total') {
   if (!data.length) return 0;
 
   let sum = 0;
-  let count = 0; // лічильник робочих днів/тижнів
+  let count = 0;
 
   for (const item of data) {
     const value =
@@ -108,7 +104,7 @@ export function calculateAverage(data, line = 'total') {
         ? (item.l1 || 0) + (item.l2 || 0) + (item.l3 || 0)
         : item[line] || 0;
 
-    if (value > 0) count++; // якщо є хоча б одне замовлення, враховуємо
+    if (value > 0) count++;
     sum += value;
   }
 

@@ -63,14 +63,11 @@ function StackedBarChart({ data, goal, medium }) {
             const paddingY = 2;
             const fontSize = 12;
             const text = `Meta: ${formatNumber(goal)} m²`;
-            const textWidth = text.length * 6; // приблизна ширина
-
-            // додаткове підняття над лінією
-            const offsetY = 4; // пікселів над ReferenceLine
+            const textWidth = text.length * 6;
+            const offsetY = 4;
 
             return (
               <g>
-                {/* фон */}
                 <rect
                   x={x + 5}
                   y={y - fontSize - paddingY - offsetY}
@@ -80,7 +77,6 @@ function StackedBarChart({ data, goal, medium }) {
                   fill="var(--background)"
                 />
 
-                {/* текст */}
                 <text
                   x={x + 5 + paddingX}
                   y={y - paddingY - offsetY}
@@ -106,14 +102,11 @@ function StackedBarChart({ data, goal, medium }) {
             const paddingY = 2;
             const fontSize = 12;
             const text = `Média: ${formatNumber(medium)} m²`;
-            const textWidth = text.length * 6; // приблизна ширина
-
-            // додаткове підняття над лінією
-            const offsetY = 4; // пікселів над ReferenceLine
+            const textWidth = text.length * 6;
+            const offsetY = 4;
 
             return (
               <g>
-                {/* фон */}
                 <rect
                   x={x + 5}
                   y={y - fontSize - paddingY - offsetY}
@@ -123,7 +116,6 @@ function StackedBarChart({ data, goal, medium }) {
                   fill="var(--background)"
                 />
 
-                {/* текст */}
                 <text
                   x={x + 5 + paddingX}
                   y={y - paddingY - offsetY}

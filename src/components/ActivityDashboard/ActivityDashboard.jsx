@@ -1,15 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import css from './ActivityDashboard.module.css';
-import {
-  selectActivity,
-  selectActivityIsloading,
-} from '../../redux/orders/selectors.js';
 import { useEffect } from 'react';
-import { getUserDailyActivity } from '../../redux/orders/operations.js';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { Box } from '@mui/material';
+
+import {
+  selectActivity,
+  selectActivityIsloading,
+} from '../../redux/orders/selectors.js';
+import { getUserDailyActivity } from '../../redux/orders/operations.js';
+
+import css from './ActivityDashboard.module.css';
 
 function ActivityDashboard({ year, onYearChange }) {
   const dispatch = useDispatch();

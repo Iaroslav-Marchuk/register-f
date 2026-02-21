@@ -14,9 +14,23 @@
   width: 92px;
 }
 
+.icon {
+  stroke: var(--secondary-foreground);
+}
+
+.burgerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media only screen and (min-width: 768px) {
   .logo {
     height: 85px;
     width: 120px;
+  }
+
+  .burgerBtn {
+    display: none;
   }
 }

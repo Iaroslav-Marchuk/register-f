@@ -1,14 +1,12 @@
 import * as Yup from 'yup';
-
+import { PulseLoader } from 'react-spinners';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 
-import { PulseLoader } from 'react-spinners';
+import { changePassword } from '../../redux/auth/operations.js';
 
 import css from './ChangePassForm.module.css';
-import { changePassword } from '../../redux/auth/operations.js';
 
 function ChangePassForm({ onClose }) {
   const dispatch = useDispatch();

@@ -5,7 +5,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
@@ -43,7 +42,6 @@ function SimpleBarChart({ data, medium }) {
             );
           }}
         />
-        {/* <Legend /> */}
 
         <ReferenceLine
           y={medium}
@@ -55,14 +53,11 @@ function SimpleBarChart({ data, medium }) {
             const paddingY = 2;
             const fontSize = 12;
             const text = `Média: ${formatNumber(medium)} m²`;
-            const textWidth = text.length * 6; // приблизна ширина
-
-            // додаткове підняття над лінією
-            const offsetY = 4; // пікселів над ReferenceLine
+            const textWidth = text.length * 6;
+            const offsetY = 4;
 
             return (
               <g>
-                {/* фон */}
                 <rect
                   x={x + 5}
                   y={y - fontSize - paddingY - offsetY}
@@ -72,7 +67,6 @@ function SimpleBarChart({ data, medium }) {
                   fill="var(--background)"
                 />
 
-                {/* текст */}
                 <text
                   x={x + 5 + paddingX}
                   y={y - paddingY - offsetY}

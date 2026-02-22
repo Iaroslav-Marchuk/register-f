@@ -113,60 +113,7 @@ function ActivityDashboard({ year, onYearChange }) {
           </Box>
         </Stack>
       ) : (
-        <div className={css.wrapper}>
-          <div className={css.calendarGrid}>
-            <div className={css.emptyCell}></div>
-            <div className={css.dayLabels}>
-              {DAYS.map(d => (
-                <span key={d}>{d}</span>
-              ))}
-            </div>
-            <div className={css.monthLabels}>
-              {monthLabels.map(m => (
-                <span
-                  key={m.weekIndex}
-                  className={css.monthLabel}
-                  style={{ gridColumn: m.weekIndex + 1 }}
-                >
-                  {m.label}
-                </span>
-              ))}
-            </div>
-            <div className={css.daysGrid}>
-              {cells.map((day, i) => {
-                if (!day)
-                  return <div key={i} className={css.day} data-empty={true} />;
-
-                const activity = activityMap[day.date];
-
-                const hasData = Boolean(activity);
-
-                const completedItems = hasData ? activity.completedItems : 0;
-                const completedM2 = hasData ? activity.completedM2 : 0;
-
-                const value = completedM2;
-                let level = 0;
-                if (value > 500) level = 5;
-                else if (value > 400) level = 4;
-                else if (value > 300) level = 3;
-                else if (value > 200) level = 2;
-                else if (value > 100) level = 1;
-
-                const tooltip = hasData
-                  ? `${day.date}: ${completedItems} vidros, ${completedM2} m²`
-                  : `${day.date}: sem resultados`;
-
-                return (
-                  <div
-                    key={i}
-                    className={`${css.day} ${css[`l${level}`]} ${!hasData ? css.emptyDay : ''}`}
-                    title={tooltip}
-                  />
-                );
-              })}
-            </div>
-          </div>
-
+        <>
           <div className={css.yearSelect}>
             <select
               value={year}
@@ -180,7 +127,63 @@ function ActivityDashboard({ year, onYearChange }) {
               ))}
             </select>
           </div>
-        </div>
+          <div className={css.wrapper}>
+            <div className={css.calendarGrid}>
+              <div className={css.emptyCell}></div>
+              <div className={css.dayLabels}>
+                {DAYS.map(d => (
+                  <span key={d}>{d}</span>
+                ))}
+              </div>
+              <div className={css.monthLabels}>
+                {monthLabels.map(m => (
+                  <span
+                    key={m.weekIndex}
+                    className={css.monthLabel}
+                    style={{ gridColumn: m.weekIndex + 1 }}
+                  >
+                    {m.label}
+                  </span>
+                ))}
+              </div>
+              <div className={css.daysGrid}>
+                {cells.map((day, i) => {
+                  if (!day)
+                    return (
+                      <div key={i} className={css.day} data-empty={true} />
+                    );
+
+                  const activity = activityMap[day.date];
+
+                  const hasData = Boolean(activity);
+
+                  const completedItems = hasData ? activity.completedItems : 0;
+                  const completedM2 = hasData ? activity.completedM2 : 0;
+
+                  const value = completedM2;
+                  let level = 0;
+                  if (value > 500) level = 5;
+                  else if (value > 400) level = 4;
+                  else if (value > 300) level = 3;
+                  else if (value > 200) level = 2;
+                  else if (value > 100) level = 1;
+
+                  const tooltip = hasData
+                    ? `${day.date}: ${completedItems} vidros, ${completedM2} m²`
+                    : `${day.date}: sem resultados`;
+
+                  return (
+                    <div
+                      key={i}
+                      className={`${css.day} ${css[`l${level}`]} ${!hasData ? css.emptyDay : ''}`}
+                      title={tooltip}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
       <div className={css.legendContainer}>

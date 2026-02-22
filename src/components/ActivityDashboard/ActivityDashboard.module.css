@@ -1,9 +1,30 @@
+.yearSelect {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  width: 120px;
+}
+
+.select {
+  width: 100%;
+  padding: 8px 24px;
+  background-color: #26a69a;
+  border: solid 2px #004d40;
+  color: var(--primary);
+  border-radius: 8px;
+  outline: none;
+  text-align: center;
+}
+
 .wrapper {
-  display: flex;
-  gap: 40px;
+  margin-top: 20px;
+  width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
 .calendarGrid {
+  min-width: 720px;
   display: grid;
   grid-template-columns: 32px 1fr;
   grid-template-rows: 20px auto;
@@ -60,23 +81,6 @@
   background: var(--muted);
 }
 
-.yearSelect {
-  position: relative;
-  display: inline-block;
-  width: 160px;
-}
-
-.select {
-  width: 100%;
-  padding: 8px 24px;
-  background-color: #26a69a;
-  border: solid 2px #004d40;
-  color: var(--primary);
-  border-radius: 8px;
-  outline: none;
-  text-align: center;
-}
-
 .legendContainer {
   margin-top: 20px;
 }
@@ -90,6 +94,7 @@
   display: flex;
   justify-content: left;
   align-items: center;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -125,4 +130,13 @@
 
 .emptyDay {
   opacity: 0.4;
+}
+
+@media screen and (min-width: 768px) {
+  .yearSelect {
+    width: 160px;
+  }
+}
+
+@media screen and (min-width: 1240px) {
 }

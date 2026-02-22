@@ -1,12 +1,14 @@
 .title {
-  margin: 60px 0;
+  margin-top: 40px;
+  font-size: 18px;
 }
 
 .container {
-  margin-left: 30px;
+  margin-top: 30px;
+
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 32px;
 }
 
 .themeWrapper {
@@ -16,23 +18,13 @@
 }
 
 .btn {
-  width: 240px;
+  width: 100%;
   padding: 8px 24px;
   background-color: #26a69a;
   border: solid 2px #004d40;
   color: var(--primary);
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
-}
-
-.btn:hover {
-  transform: scale(1.05);
-  background: #00897b;
-}
-
-.btn:active {
-  transform: scale(0.98);
-  background: #00897b;
 }
 
 .btn:disabled {
@@ -42,10 +34,6 @@
   color: var(--muted-foreground);
 }
 
-.active {
-  background-color: var(--secondary-hover);
-}
-
 .inputContainer {
   display: flex;
   flex-direction: column;
@@ -53,7 +41,7 @@
 }
 
 .input {
-  width: 240px;
+  width: 100%;
   padding: 8px 40px 8px 12px;
   border: solid 1px var(--secondary-foreground);
   border-radius: 8px;
@@ -63,14 +51,58 @@
     box-shadow 0.2s ease;
 }
 
-.input:focus {
-  box-shadow: 0 0 0 1px var(--secondary-foreground);
+@media screen and (min-width: 768px) {
+  .title {
+    margin-top: 60px;
+    font-size: 24px;
+  }
+
+  .container {
+    margin-top: 60px;
+    margin-left: 30px;
+    gap: 48px;
+  }
+
+  .themeWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn {
+    width: 240px;
+  }
+
+  .btn:hover {
+    transform: scale(1.05);
+    background: #00897b;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+    background: #00897b;
+  }
+
+  .active {
+    background-color: var(--secondary-hover);
+  }
+
+  .input {
+    width: 240px;
+  }
+
+  .input:focus {
+    box-shadow: 0 0 0 1px var(--secondary-foreground);
+  }
+
+  .input:disabled,
+  select:disabled {
+    background-color: var(--muted);
+    border-color: var(--muted-foreground);
+    cursor: not-allowed;
+    color: var(--muted-foreground);
+  }
 }
 
-.input:disabled,
-select:disabled {
-  background-color: var(--muted);
-  border-color: var(--muted-foreground);
-  cursor: not-allowed;
-  color: var(--muted-foreground);
+@media screen and (min-width: 1240px) {
 }

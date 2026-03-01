@@ -36,61 +36,63 @@ function ReportTable({ ordersList, user, sortBy, sortOrder, onSortChange }) {
   };
 
   return (
-    <table className={css.table}>
-      <thead className={css.header}>
-        <tr>
-          <th rowSpan={2}>
-            <div className={css.cell}>
-              <button
-                className={css.cellBtn}
-                onClick={() => handleSortClick('ep')}
-              >
-                {getSortIcon('ep')}
-              </button>
-              <span>EP</span>
-            </div>
-          </th>
-          <th rowSpan={2}>
-            <div className={css.cell}>
-              <button
-                className={css.cellBtn}
-                onClick={() => handleSortClick('client')}
-              >
-                {getSortIcon('client')}
-              </button>
-              <span>Cliente</span>
-            </div>
-          </th>
-          <th colSpan={4}>N de vidros</th>
+    <div className={css.tableWrapper}>
+      <table className={css.table}>
+        <thead className={css.header}>
+          <tr>
+            <th rowSpan={2}>
+              <div className={css.cell}>
+                <button
+                  className={css.cellBtn}
+                  onClick={() => handleSortClick('ep')}
+                >
+                  {getSortIcon('ep')}
+                </button>
+                <span>EP</span>
+              </div>
+            </th>
+            <th rowSpan={2}>
+              <div className={css.cell}>
+                <button
+                  className={css.cellBtn}
+                  onClick={() => handleSortClick('client')}
+                >
+                  {getSortIcon('client')}
+                </button>
+                <span>Cliente</span>
+              </div>
+            </th>
+            <th colSpan={4}>N de vidros</th>
 
-          <th rowSpan={2}>Lote butyl</th>
-          <th rowSpan={2}>Lote sílica</th>
-          <th colSpan={2}>Lote polissufuro</th>
+            <th rowSpan={2}>Lote butyl</th>
+            <th rowSpan={2}>Lote sílica</th>
+            <th colSpan={2}>Lote polissufuro</th>
 
-          <th rowSpan={2}>Observações</th>
-          <th rowSpan={2}>Responsável</th>
-          <th rowSpan={2}>Local</th>
-          <th rowSpan={2}>Data</th>
-        </tr>
-        <tr>
-          <th className={css.subtitel}>total, unid.</th>
-          <th className={css.subtitel}>
-            total, m<sup>2</sup>
-          </th>
-          <th className={css.subtitel}>feitos, unid.</th>
-          <th className={css.subtitel}>
-            feito, m<sup>2</sup>
-          </th>
-          <th className={css.subtitel}>branco</th>
-          <th className={css.subtitel}>preto</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ordersList.map((order, index) => (
-          <ReportTableRow key={index} order={order} user={user} />
-        ))}
-      </tbody>
-    </table>
+            <th rowSpan={2}>Observações</th>
+            <th rowSpan={2}>Responsável</th>
+            <th rowSpan={2}>Local</th>
+            <th rowSpan={2}>Data</th>
+          </tr>
+          <tr>
+            <th className={css.subtitel}>total, unid.</th>
+            <th className={css.subtitel}>
+              total, m<sup>2</sup>
+            </th>
+            <th className={css.subtitel}>feitos, unid.</th>
+            <th className={css.subtitel}>
+              feito, m<sup>2</sup>
+            </th>
+            <th className={css.subtitel}>branco</th>
+            <th className={css.subtitel}>preto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordersList.map((order, index) => (
+            <ReportTableRow key={index} order={order} user={user} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

@@ -67,10 +67,6 @@ function StatsDashboard() {
 
   const statisticsIsLoading = useSelector(selectStatisticsIsLoading);
 
-  // useEffect(() => {
-  //   dispatch(getFullStatisticForYear(selectedYear));
-  // }, [selectedYear, dispatch]);
-
   useEffect(() => {
     if (!statisticsByYear) {
       dispatch(getFullStatisticForYear(selectedYear));
@@ -218,21 +214,6 @@ function StatsDashboard() {
         return [];
     }
   }, [statisticsByYear, period, days, monthWeeks, visibleWeeks, start]);
-
-  // const average = useMemo(() => {
-  //   if (period === 'year') {
-  //     const totalSum = statisticsByYear.reduce((acc, item) => {
-  //       if (line === 'total') {
-  //         return acc + (item.l1 || 0) + (item.l2 || 0) + (item.l3 || 0);
-  //       }
-  //       return acc + (item[line] || 0);
-  //     }, 0);
-
-  //     return totalSum / WEEKS_IN_YEAR;
-  //   }
-
-  //   return calculateAverage(periodData, line);
-  // }, [statisticsByYear, period, line, periodData, WEEKS_IN_YEAR]);
 
   const average = useMemo(() => {
     if (!Array.isArray(statisticsByYear)) return 0;
@@ -405,7 +386,9 @@ function StatsDashboard() {
             )}
           </div>
 
-          {chart}
+          <div className={css.chartScroll}>
+            <div className={css.chartInner}>{chart}</div>
+          </div>
 
           <div className={css.navBtn}>
             {!(

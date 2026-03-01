@@ -6,12 +6,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  width: auto;
-  max-width: 90vw;
-
+  /* width: auto; */
+  /* max-width: 90vw; */
+  width: 90vw;
+  max-width: 320px;
   max-height: 80vh;
-
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   z-index: 1001;
@@ -42,4 +41,16 @@
 
 .btn:hover {
   transform: scale(1.2);
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    max-width: 500px;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .modal {
+    max-width: 900px;
+  }
 }

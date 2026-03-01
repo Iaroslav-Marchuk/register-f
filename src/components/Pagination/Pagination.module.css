@@ -1,31 +1,13 @@
 .paginationContainer {
+  display: none;
+}
+
+.mobilePagination {
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-top: 40px;
-}
-
-.arrow {
-  margin: 0 20px;
-}
-
-.arrow:hover {
-  transform: scale(1.03);
-}
-
-.arrow:active {
-  transform: scale(0.98);
-}
-
-.arrow:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.arrow:disabled .arrowIcon {
-  stroke: #999;
-  fill: #ddd;
+  gap: 20px;
 }
 
 .arrowIcon {
@@ -33,32 +15,71 @@
   fill: var(--secondary);
 }
 
-.arrowIcon:hover {
-  fill: var(--secondary-hover);
+@media screen and (min-width: 768px) {
+  .mobilePagination {
+    display: none;
+  }
+
+  .paginationContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .arrow {
+    margin: 0 20px;
+  }
+
+  .arrow:hover {
+    transform: scale(1.03);
+  }
+
+  .arrow:active {
+    transform: scale(0.98);
+  }
+
+  .arrow:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .arrow:disabled .arrowIcon {
+    stroke: #999;
+    fill: #ddd;
+  }
+
+  .arrowIcon:hover {
+    fill: var(--secondary-hover);
+  }
+
+  .pageBtn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    background-color: var(--secondary);
+    border: solid 2px var(--secondary-foreground);
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .pageBtn:hover {
+    background-color: var(--secondary-hover);
+    transform: scale(1.03);
+  }
+
+  .pageBtn:active {
+    transform: scale(0.98);
+  }
+
+  .isActive {
+    background-color: var(--secondary-hover);
+  }
 }
 
-.pageBtn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  background-color: var(--secondary);
-  border: solid 2px var(--secondary-foreground);
-  border-radius: 50%;
-  transition: all 0.2s ease-in-out;
-}
-
-.pageBtn:hover {
-  background-color: var(--secondary-hover);
-  transform: scale(1.03);
-}
-
-.pageBtn:active {
-  transform: scale(0.98);
-}
-
-.isActive {
-  background-color: var(--secondary-hover);
+@media screen and (min-width: 1240px) {
 }

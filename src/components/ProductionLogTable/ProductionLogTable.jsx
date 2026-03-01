@@ -35,7 +35,7 @@ function ProductionLogTable({ ordersList, sortBy, sortOrder, onSortChange }) {
   };
 
   return (
-    <>
+    <div className={css.tableWrapper}>
       <table className={css.table}>
         <thead className={css.header}>
           <tr>
@@ -90,7 +90,7 @@ function ProductionLogTable({ ordersList, sortBy, sortOrder, onSortChange }) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
 

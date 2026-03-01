@@ -1,37 +1,48 @@
 .form {
-  margin: 24px 0;
-  display: flex;
-  flex-direction: column;
-  width: 320px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
   gap: 10px;
   background-color: var(--background);
-}
-
-.field {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .fieldset {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  gap: 10px;
+  gap: 12px;
+  padding: 16px;
   border: 1px solid var(--secondary-foreground);
   background-color: var(--background);
   border-radius: 12px;
 }
 
+.legend {
+  font-weight: 600;
+}
+
+.gridWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: space-between;
+  align-items: start;
+}
+
 .label {
   font-size: 16px;
   font-weight: 600;
-  margin-right: 12px;
 }
 
 .input {
   outline: none;
-  width: 160px;
+  width: 100%;
   padding: 6px 10px;
   font-size: 16px;
   border: 1px solid var(--secondary-foreground);
@@ -58,10 +69,6 @@
   display: block;
 }
 
-.legend {
-  font-weight: 600;
-}
-
 .btn {
   display: flex;
   justify-content: center;
@@ -74,6 +81,8 @@
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
   min-height: 44px;
+  position: sticky;
+  bottom: 0;
 }
 
 .btn:hover {
@@ -102,10 +111,15 @@
   transform: scale(0.5);
 }
 
+.groupWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .checkList {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* дві колонки */
-  gap: 0px 24px; /* вертикальний та горизонтальний відступ */
+  gap: 0px 24px;
   padding: 0;
   list-style: none;
 }
@@ -128,4 +142,86 @@
 
 .checkName {
   font-weight: 600;
+}
+
+.legendClickable {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  cursor: pointer;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.legendClickable svg {
+  transition: transform 0.2s ease;
+}
+
+.open {
+  transform: rotate(180deg);
+}
+
+.collapsible {
+  display: none;
+}
+
+.openBlock {
+  display: block;
+}
+
+@media screen and (min-width: 768px) {
+  .gridWrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn {
+    width: 180px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 16px;
+  }
+
+  .general {
+    grid-column: 1;
+  }
+
+  .glass {
+    grid-column: 1;
+  }
+
+  .materials {
+    grid-column: 1;
+  }
+
+  .notes {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: start;
+    height: fit-content;
+  }
+
+  .collapsible {
+    display: contents;
+  }
+
+  .legendClickable svg {
+    display: none;
+  }
+
+  .legendClickable {
+    cursor: default;
+  }
+
+  .btn {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: fit-content;
+  }
 }

@@ -1,5 +1,6 @@
 .wrapper {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   justify-content: space-around;
   align-items: center;
@@ -12,7 +13,7 @@
 
 .input {
   outline: none;
-  width: 360px;
+  width: 204px;
   padding: 8px 40px 8px 40px;
   border: 1px solid var(--secondary-foreground);
   background-color: var(--background);
@@ -31,10 +32,6 @@
 
 .input::placeholder {
   color: var(--muted);
-}
-
-.input:focus {
-  border: 2px solid var(--secondary-foreground);
 }
 
 .clear {
@@ -56,6 +53,7 @@
 
 .btns {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   justify-content: center;
   align-items: center;
@@ -93,4 +91,25 @@
 
 .dateInput::placeholder {
   color: var(--primary);
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+  }
+
+  .input {
+    width: 360px;
+  }
+
+  .input:focus {
+    border: 2px solid var(--secondary-foreground);
+  }
+
+  .btns {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1240px) {
 }

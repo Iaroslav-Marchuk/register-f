@@ -17,6 +17,12 @@ tbody td {
   border: 1px solid var(--secondary-foreground);
 }
 
+.tableWrapper {
+  overflow-x: auto;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
 .table {
   border-collapse: collapse;
   border: 2px solid var(--secondary-foreground);

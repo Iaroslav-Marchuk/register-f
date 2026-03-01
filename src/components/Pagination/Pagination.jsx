@@ -30,47 +30,74 @@ function Pagination({ page, totalPages, onPageChange }) {
   const pages = getPages(page, totalPages);
 
   return (
-    <div className={css.paginationContainer}>
-      <button
-        disabled={page === 1}
-        onClick={() => onPageChange(page - 1)}
-        className={css.arrow}
-      >
-        <CircleChevronLeft
-          size={36}
-          strokeWidth={1}
-          className={css.arrowIcon}
-        />
-      </button>
+    <>
+      <div className={css.paginationContainer}>
+        <button
+          disabled={page === 1}
+          onClick={() => onPageChange(page - 1)}
+          className={css.arrow}
+        >
+          <CircleChevronLeft
+            size={36}
+            strokeWidth={1}
+            className={css.arrowIcon}
+          />
+        </button>
 
-      {pages.map((p, i) =>
-        p === '...' ? (
-          <span key={`dots-${i}`} className={css.dots}>
-            …
-          </span>
-        ) : (
-          <button
-            key={`page-${p}`}
-            onClick={() => onPageChange(p)}
-            className={clsx(css.pageBtn, p === page && css.isActive)}
-          >
-            {p}
-          </button>
-        )
-      )}
+        {pages.map((p, i) =>
+          p === '...' ? (
+            <span key={`dots-${i}`} className={css.dots}>
+              …
+            </span>
+          ) : (
+            <button
+              key={`page-${p}`}
+              onClick={() => onPageChange(p)}
+              className={clsx(css.pageBtn, p === page && css.isActive)}
+            >
+              {p}
+            </button>
+          )
+        )}
 
-      <button
-        disabled={page === totalPages}
-        onClick={() => onPageChange(page + 1)}
-        className={css.arrow}
-      >
-        <CircleChevronRight
-          size={36}
-          strokeWidth={1}
-          className={css.arrowIcon}
-        />
-      </button>
-    </div>
+        <button
+          disabled={page === totalPages}
+          onClick={() => onPageChange(page + 1)}
+          className={css.arrow}
+        >
+          <CircleChevronRight
+            size={36}
+            strokeWidth={1}
+            className={css.arrowIcon}
+          />
+        </button>
+      </div>
+
+      <div className={css.mobilePagination}>
+        <button disabled={page === 1} onClick={() => onPageChange(page - 1)}>
+          <CircleChevronLeft
+            size={36}
+            strokeWidth={1}
+            className={css.arrowIcon}
+          />
+        </button>
+
+        <span>
+          {page} / {totalPages}
+        </span>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => onPageChange(page + 1)}
+        >
+          <CircleChevronRight
+            size={36}
+            strokeWidth={1}
+            className={css.arrowIcon}
+          />
+        </button>
+      </div>
+    </>
   );
 }
 

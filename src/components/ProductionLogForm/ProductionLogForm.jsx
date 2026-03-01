@@ -12,9 +12,13 @@ import {
   updateOrder,
 } from '../../redux/orders/operations.js';
 import { useDispatch } from 'react-redux';
+import { ChevronDown } from 'lucide-react';
 
 function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
   const dispatch = useDispatch();
+
+  const [showNotes, setShowNotes] = useState(false);
+  const [showMaterials, setShowMaterials] = useState(false);
 
   const NOTE_CHECKBOXES = {
     Tamanho: [
@@ -49,6 +53,8 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
       { id: 'siliconeEstrutural', text: 'c/silicone estrutural' },
       { id: 'comutavel', text: 'Comutável' },
     ],
+
+    Versão: [{ id: 'reposição', text: 'Reposição' }],
   };
 
   const initialValues = order
@@ -326,190 +332,237 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
     >
       {formik => (
         <Form className={css.form}>
-          <div className={css.field}>
-            <label htmlFor="ep" className={css.label}>
-              EP
-            </label>
-            <Field
-              id="ep"
-              name="ep"
-              className={css.input}
-              type="number"
-              onBlur={e => handleOnBlur(e.target.value, formik)}
-              disabled={isFieldDisabled('ep')}
-            />
-            <ErrorMessage className={css.error} name="ep" component="span" />
-          </div>
-          <div className={css.field}>
-            <label htmlFor="client" className={css.label}>
-              Cliente
-            </label>
-            <Field
-              id="client"
-              name="client"
-              className={css.input}
-              disabled={isFieldDisabled('client')}
-            />
-            <ErrorMessage
-              className={css.error}
-              name="client"
-              component="span"
-            />
-          </div>
-          <fieldset className={css.fieldset}>
-            <legend className={css.legend}>N de vidros</legend>
-
-            <div className={css.field}>
-              <label htmlFor="totalItems" className={css.label}>
-                Total, unid.
-              </label>
-              <Field
-                id="totalItems"
-                name="totalItems"
-                className={css.input}
-                type="number"
-                disabled={isFieldDisabled('totalItems')}
-              />
-              <ErrorMessage
-                className={css.error}
-                name="totalItems"
-                component="span"
-              />
-            </div>
-
-            <div className={css.field}>
-              <label htmlFor="totalM2" className={css.label}>
-                Total, m<sup>2</sup>
-              </label>
-              <Field
-                id="totalM2"
-                name="totalM2"
-                className={css.input}
-                type="number"
-                disabled={isFieldDisabled('totalM2')}
-              />
-              <ErrorMessage
-                className={css.error}
-                name="totalM2"
-                component="span"
-              />
-            </div>
-
-            <div className={css.field}>
-              <label htmlFor="completedItems" className={css.label}>
-                Feito, unid.
-              </label>
-              <Field
-                id="completedItems"
-                name="completedItems"
-                className={css.input}
-                type="number"
-              />
-              <ErrorMessage
-                className={css.error}
-                name="completedItems"
-                component="span"
-              />
-            </div>
-
-            <div className={css.field}>
-              <label htmlFor="completedM2" className={css.label}>
-                Feito, m<sup>2</sup>
-              </label>
-              <Field
-                id="completedM2"
-                name="completedM2"
-                className={css.input}
-                type="number"
-              />
-              <ErrorMessage
-                className={css.error}
-                name="completedM2"
-                component="span"
-              />
-            </div>
-          </fieldset>
-          <div className={css.field}>
-            <label htmlFor="butylLot" className={css.label}>
-              Lote butyl
-            </label>
-            <Field id="butylLot" name="butylLot" className={css.input} />
-            <ErrorMessage
-              className={css.error}
-              name="butylLot"
-              component="span"
-            />
-          </div>
-          <div className={css.field}>
-            <label htmlFor="silicaLot" className={css.label}>
-              Lote sílica
-            </label>
-            <Field id="silicaLot" name="silicaLot" className={css.input} />
-            <ErrorMessage
-              className={css.error}
-              name="silicaLot"
-              component="span"
-            />
-          </div>
-          <fieldset className={css.fieldset}>
-            <legend className={css.legend}>Lote polissufuro</legend>
-
-            <div className={css.field}>
-              <label htmlFor="white" className={css.label}>
-                Branco
-              </label>
-              <Field
-                id="white"
-                name="polysulfideLot.white"
-                className={css.input}
-              />
-              <ErrorMessage
-                className={css.error}
-                name="polysulfideLot.white"
-                component="span"
-              />
-            </div>
-
-            <div className={css.field}>
-              <label htmlFor="black" className={css.label}>
-                Preto
-              </label>
-              <Field
-                id="black"
-                name="polysulfideLot.black"
-                className={css.input}
-              />
-              <ErrorMessage
-                className={css.error}
-                name="polysulfideLot.black"
-                component="span"
-              />
-            </div>
-          </fieldset>
-
-          <fieldset className={css.fieldset}>
-            <legend className={css.legend}>Observações</legend>
-            {Object.entries(NOTE_CHECKBOXES).map(([group, items]) => (
-              <div key={group} className={css.groupWrapper}>
-                <p className={css.checkName}>{group}</p>
-                <ul key={group} className={css.checkList}>
-                  {items.map(opt => (
-                    <li key={opt.id} className={css.checkItem}>
-                      <label className={css.checkboxLabel}>
-                        <Field
-                          type="checkbox"
-                          name="checkedNotes"
-                          value={opt.text}
-                        />
-                        <span className={css.checkItemText}>{opt.text}</span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
+          <fieldset className={`${css.fieldset} ${css.general}`}>
+            <legend className={css.legend}>Geral</legend>
+            <div className={css.gridWrapper}>
+              <div className={css.field}>
+                <label htmlFor="ep" className={css.label}>
+                  EP
+                </label>
+                <Field
+                  id="ep"
+                  name="ep"
+                  className={css.input}
+                  type="number"
+                  onBlur={e => handleOnBlur(e.target.value, formik)}
+                  disabled={isFieldDisabled('ep')}
+                />
+                <ErrorMessage
+                  className={css.error}
+                  name="ep"
+                  component="span"
+                />
               </div>
-            ))}
+              <div className={css.field}>
+                <label htmlFor="client" className={css.label}>
+                  Cliente
+                </label>
+                <Field
+                  id="client"
+                  name="client"
+                  className={css.input}
+                  disabled={isFieldDisabled('client')}
+                />
+                <ErrorMessage
+                  className={css.error}
+                  name="client"
+                  component="span"
+                />
+              </div>
+            </div>
           </fieldset>
+          {/* +++++++++++++++++++++++++++++++++++++++++++++++++++ */}
+          <fieldset className={`${css.fieldset} ${css.glass}`}>
+            <legend className={css.legend}>Vidros</legend>
+            <div className={css.gridWrapper}>
+              <div className={css.field}>
+                <label htmlFor="totalItems" className={css.label}>
+                  Total, unid.
+                </label>
+                <Field
+                  id="totalItems"
+                  name="totalItems"
+                  className={css.input}
+                  type="number"
+                  disabled={isFieldDisabled('totalItems')}
+                />
+                <ErrorMessage
+                  className={css.error}
+                  name="totalItems"
+                  component="span"
+                />
+              </div>
 
+              <div className={css.field}>
+                <label htmlFor="totalM2" className={css.label}>
+                  Total, m<sup>2</sup>
+                </label>
+                <Field
+                  id="totalM2"
+                  name="totalM2"
+                  className={css.input}
+                  type="number"
+                  disabled={isFieldDisabled('totalM2')}
+                />
+                <ErrorMessage
+                  className={css.error}
+                  name="totalM2"
+                  component="span"
+                />
+              </div>
+
+              <div className={css.field}>
+                <label htmlFor="completedItems" className={css.label}>
+                  Feito, unid.
+                </label>
+                <Field
+                  id="completedItems"
+                  name="completedItems"
+                  className={css.input}
+                  type="number"
+                />
+                <ErrorMessage
+                  className={css.error}
+                  name="completedItems"
+                  component="span"
+                />
+              </div>
+
+              <div className={css.field}>
+                <label htmlFor="completedM2" className={css.label}>
+                  Feito, m<sup>2</sup>
+                </label>
+                <Field
+                  id="completedM2"
+                  name="completedM2"
+                  className={css.input}
+                  type="number"
+                />
+                <ErrorMessage
+                  className={css.error}
+                  name="completedM2"
+                  component="span"
+                />
+              </div>
+            </div>
+          </fieldset>
+          {/* +++++++++++++++++++++++++++++++++++++++++++++++++++ */}
+          <fieldset className={`${css.fieldset} ${css.materials}`}>
+            <legend
+              className={css.legendClickable}
+              onClick={() => setShowMaterials(v => !v)}
+            >
+              <ChevronDown
+                size={16}
+                className={showMaterials ? css.open : ''}
+              />
+              Materiais de selagem
+            </legend>
+
+            <div
+              className={`${css.collapsible} ${
+                showMaterials ? css.openBlock : ''
+              }`}
+            >
+              <div className={css.gridWrapper}>
+                <div className={css.field}>
+                  <label htmlFor="butylLot" className={css.label}>
+                    Lote butyl
+                  </label>
+                  <Field id="butylLot" name="butylLot" className={css.input} />
+                  <ErrorMessage
+                    className={css.error}
+                    name="butylLot"
+                    component="span"
+                  />
+                </div>
+                <div className={css.field}>
+                  <label htmlFor="silicaLot" className={css.label}>
+                    Lote sílica
+                  </label>
+                  <Field
+                    id="silicaLot"
+                    name="silicaLot"
+                    className={css.input}
+                  />
+                  <ErrorMessage
+                    className={css.error}
+                    name="silicaLot"
+                    component="span"
+                  />
+                </div>
+                <div className={css.field}>
+                  <label htmlFor="white" className={css.label}>
+                    Lote polissufuro branco
+                  </label>
+                  <Field
+                    id="white"
+                    name="polysulfideLot.white"
+                    className={css.input}
+                  />
+                  <ErrorMessage
+                    className={css.error}
+                    name="polysulfideLot.white"
+                    component="span"
+                  />
+                </div>
+
+                <div className={css.field}>
+                  <label htmlFor="black" className={css.label}>
+                    Lote polissufuro preto
+                  </label>
+                  <Field
+                    id="black"
+                    name="polysulfideLot.black"
+                    className={css.input}
+                  />
+                  <ErrorMessage
+                    className={css.error}
+                    name="polysulfideLot.black"
+                    component="span"
+                  />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          {/* +++++++++++++++++++++++++++++++++++++++++++++++++++ */}
+          <fieldset className={`${css.fieldset} ${css.notes}`}>
+            <legend
+              className={css.legendClickable}
+              onClick={() => setShowNotes(v => !v)}
+            >
+              <ChevronDown size={16} className={showNotes ? css.open : ''} />
+              Observações
+            </legend>
+
+            <div
+              className={`${css.collapsible} ${showNotes ? css.openBlock : ''}`}
+            >
+              <div className={css.gridWrapper}>
+                {Object.entries(NOTE_CHECKBOXES).map(([group, items]) => (
+                  <div key={group} className={css.groupWrapper}>
+                    <p className={css.checkName}>{group}</p>
+                    <ul key={group} className={css.checkList}>
+                      {items.map(opt => (
+                        <li key={opt.id} className={css.checkItem}>
+                          <label className={css.checkboxLabel}>
+                            <Field
+                              type="checkbox"
+                              name="checkedNotes"
+                              value={opt.text}
+                            />
+                            <span className={css.checkItemText}>
+                              {opt.text}
+                            </span>
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </fieldset>
           <button
             type="submit"
             className={css.btn}
@@ -532,7 +585,7 @@ function ProductionLogForm({ isEdit = false, order = null, onSubmit }) {
             ) : orderMode === 'recovery' ? (
               'Reposição'
             ) : (
-              'Adicionar nova encomenda'
+              'Nova encomenda'
             )}
           </button>
         </Form>

@@ -7,20 +7,44 @@ const axiosAPI = axios.create({
   withCredentials: true,
 });
 
+// axiosAPI.interceptors.response.use(
+//   response => response,
+//   async error => {
+//     const originalRequest = error.config;
+
+//     if (error.response?.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+//       try {
+//         await axiosAPI.post('/auth/refresh');
+
+//         return axiosAPI(originalRequest);
+//       } catch (refreshError) {
+//         console.log('Refresh token expired or invalid', refreshError);
+//         return Promise.reject(refreshError);
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
+
 axiosAPI.interceptors.response.use(
-  response => response,
+  res => res,
   async error => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/auth/refresh')
+    ) {
       originalRequest._retry = true;
+
       try {
         await axiosAPI.post('/auth/refresh');
-
         return axiosAPI(originalRequest);
-      } catch (refreshError) {
-        console.log('Refresh token expired or invalid', refreshError);
-        return Promise.reject(refreshError);
+      } catch (err) {
+        return Promise.reject(err);
       }
     }
 

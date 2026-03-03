@@ -67,11 +67,15 @@ function StatsDashboard() {
 
   const statisticsIsLoading = useSelector(selectStatisticsIsLoading);
 
+  // useEffect(() => {
+  //   if (!statisticsByYear) {
+  //     dispatch(getFullStatisticForYear(selectedYear));
+  //   }
+  // }, [selectedYear, statisticsByYear, dispatch]);
+
   useEffect(() => {
-    if (!statisticsByYear) {
-      dispatch(getFullStatisticForYear(selectedYear));
-    }
-  }, [selectedYear, statisticsByYear, dispatch]);
+    dispatch(getFullStatisticForYear(selectedYear));
+  }, [selectedYear, dispatch]);
 
   const handleYearChange = newYear => {
     const params = new URLSearchParams(searchParams);

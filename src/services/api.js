@@ -16,11 +16,13 @@ axiosAPI.interceptors.response.use(
 
     // Не перехоплюємо refresh endpoint і повторні запити
     const isRefreshRequest = originalRequest.url.includes('/auth/refresh');
+    const isLoginRequest = originalRequest.url.includes('/auth/login');
 
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !isRefreshRequest
+      !isRefreshRequest &&
+      !isLoginRequest
     ) {
       if (isRefreshing) {
         window.location.href = '/auth/login';

@@ -105,6 +105,7 @@ function ActivityDashboard({ year, onYearChange }) {
     <>
       {activityIsLoading ? (
         <Stack spacing={1}>
+          <Skeleton variant="rectangular" height={38} width={160} />
           <Skeleton variant="rectangular" height={20} width={672} />
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Skeleton variant="rectangular" height={110} width={32} />

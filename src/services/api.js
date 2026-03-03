@@ -7,18 +7,23 @@ const axiosAPI = axios.create({
   withCredentials: true,
 });
 
-let isRefreshing = false; // захист від багаторазових refresh запитів
+let isRefreshing = false;
 
 axiosAPI.interceptors.response.use(
   res => res,
   async error => {
     const originalRequest = error.config;
 
-    // Якщо 401 і ще не пробували refresh для цього запиту
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      // Якщо вже йде refresh — одразу на логін (щоб не зациклитись)
+    // Не перехоплюємо refresh endpoint і повторні запити
+    const isRefreshRequest = originalRequest.url.includes('/auth/refresh');
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isRefreshRequest
+    ) {
       if (isRefreshing) {
-        window.location.href = '/login';
+        window.location.href = '/auth/login';
         return Promise.reject(error);
       }
 
@@ -26,16 +31,12 @@ axiosAPI.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Спробуй оновити токен
         await axiosAPI.post('/auth/refresh');
         isRefreshing = false;
-
-        // Повтори оригінальний запит
         return axiosAPI(originalRequest);
       } catch (refreshError) {
-        // Refresh теж не вдався — тепер на логін
         isRefreshing = false;
-        window.location.href = '/login';
+        window.location.href = '/auth/login';
         return Promise.reject(refreshError);
       }
     }
